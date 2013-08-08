@@ -49,3 +49,4 @@ log/
 tmp/
 build/
 akka-patterns-store/
+*.cmake
