@@ -1,11 +1,12 @@
 #include "faces.h"
-#include <opencv2/gpu/gpu.hpp>
 
 using namespace eigengo::akka; 
 
 FaceCounter::FaceCounter() {
 	if (!faceClassifierCpu.load("face_cascade.xml")) throw std::exception();
+#ifdef GPU
 	if (!faceClassifierGpu.load("face_cascade.xml")) throw std::exception();
+#endif
 }
 
 Face FaceCounter::fromRect(cv::Rect rect) {
@@ -22,19 +23,19 @@ std::vector<Face> FaceCounter::countCpu(const cv::Mat &image) {
 	using namespace cv;
 	std::vector<Rect> objects;
 	Mat gray;
-	cvtColor(image, gray, CV_RGB2GRAY);
-	faceClassifierCpu.detectMultiScale(gray, objects, 1.1, 2, CV_HAAR_DO_ROUGH_SEARCH);
+	cvtColor(image, gray, COLOR_RGB2GRAY);
+	faceClassifierCpu.detectMultiScale(gray, objects, 1.1, 2, CASCADE_DO_ROUGH_SEARCH);
 	std::vector<Face> faces;
 	for (auto i = objects.begin(); i != objects.end(); ++i) {
 		faces.push_back(fromRect(*i));
 	}
 	return faces;
 }
-
+/*
 std::vector<Face> FaceCounter::countGpu(const cv::Mat &image) {
 	using namespace cv;
 	gpu::GpuMat imageGpu;
-	gpu::cvtColor(gpu::GpuMat(image), imageGpu, CV_RGB2GRAY);
+	gpu::cvtColor(gpu::GpuMat(image), imageGpu, COLOR_RGB2GRAY);
 	gpu::GpuMat objectsGpu;
 	faceClassifierGpu.findLargestObject = false;
 	int count = faceClassifierGpu.detectMultiScale(imageGpu, objectsGpu, 1.1);
@@ -51,7 +52,7 @@ std::vector<Face> FaceCounter::countGpu(const cv::Mat &image) {
 
 	return faces;
 }
-
+*/
 std::vector<Face> FaceCounter::count(const cv::Mat &image) {
 	//if (cv::gpu::getCudaEnabledDeviceCount() > 0) return countGpu(image);
 	return countCpu(image);

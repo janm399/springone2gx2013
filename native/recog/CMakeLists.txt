@@ -8,7 +8,7 @@ enable_testing()
 find_package(Boost REQUIRED COMPONENTS system chrono thread)
 find_package(Rabbitmqc REQUIRED)
 find_package(SimpleAmqpClient REQUIRED)
-find_package(OpenCV 2.4.5 EXACT REQUIRED)
+find_package(OpenCV 2.4.7 REQUIRED)
 
 include_directories(${recog_SOURCE_DIR}/src)
 include_directories(SYSTEM ${Rabbitmqc_INCLUDE_DIRS})

@@ -9,7 +9,7 @@ Recogniser::Recogniser() {
 
 bool Recogniser::recogniseFace(const cv::Mat &image) {
 	std::vector<Rect> objects;
-	faceClassifier.detectMultiScale(image, objects, 1.1, 2, CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_CANNY_PRUNING);
+	faceClassifier.detectMultiScale(image, objects, 1.1, 2, CASCADE_FIND_BIGGEST_OBJECT | CASCADE_DO_CANNY_PRUNING);
 	return objects.size() > 0;
 }
 

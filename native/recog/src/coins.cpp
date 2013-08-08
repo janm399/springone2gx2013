@@ -1,5 +1,4 @@
 #include "coins.h"
-#include <opencv2/gpu/gpu.hpp>
 
 using namespace eigengo::akka;
 
@@ -11,12 +10,12 @@ std::vector<Coin> CoinCounter::countCpu(const cv::Mat &image) {
 	Mat dst;
 	std::vector<Vec3f> circles;
 	
-	cvtColor(image, dst, CV_BGR2GRAY);
+	cvtColor(image, dst, COLOR_RGB2GRAY);
 	GaussianBlur(dst, dst, Size(9, 9), 3, 3);
 	threshold(dst, dst, 150, 255, THRESH_BINARY);
 	GaussianBlur(dst, dst, Size(3, 3), 3, 3);
 	//Canny(dst, dst, 1000, 1700, 5);
-	HoughCircles(dst, circles, CV_HOUGH_GRADIENT,
+	HoughCircles(dst, circles, HOUGH_GRADIENT,
 				 1,    // dp
 				 60,   // min dist
 				 200,  // canny1
@@ -47,7 +46,7 @@ std::vector<Coin> CoinCounter::countCpu(const cv::Mat &image) {
 #endif
 	return coins;
 }
-
+/*
 std::vector<Coin> CoinCounter::countGpu(const cv::Mat &cpuImage) {
 	std::vector<Coin> coins;
 	
@@ -89,7 +88,7 @@ std::vector<Coin> CoinCounter::countGpu(const cv::Mat &cpuImage) {
 	
 	return coins;
 }
-
+*/
 std::vector<Coin> CoinCounter::count(const cv::Mat &image) {
 	//if (cv::gpu::getCudaEnabledDeviceCount() > 0) return countGpu(image);
 	return countCpu(image);

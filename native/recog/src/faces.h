@@ -2,6 +2,7 @@
 #define faces_h
 
 #include <opencv2/opencv.hpp>
+#include <opencv2/imgproc.hpp>
 #include <opencv2/gpu/gpu.hpp>
 #include <vector>
 
@@ -17,8 +18,9 @@ namespace eigengo { namespace akka {
 	class FaceCounter {
 	private:
 		cv::CascadeClassifier faceClassifierCpu;
+#ifdef GPU
 		cv::gpu::CascadeClassifier_GPU faceClassifierGpu;
-		
+#endif
 		Face fromRect(cv::Rect);
 		
 		std::vector<Face> countGpu(const cv::Mat &image);

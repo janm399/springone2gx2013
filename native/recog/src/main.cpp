@@ -62,7 +62,7 @@ void Main::inThreadInit() {
 }
 
 int main(int argc, char** argv) {
-	Main main("count", "amq.direct", "count.key");
+	Main main("sogx.recog.queue", "sogx.exchange", "sogx.recog.key");
 	main.runAndJoin(8);
 	return 0;
 }

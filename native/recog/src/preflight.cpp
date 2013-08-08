@@ -44,7 +44,7 @@ HistorgramPreflightResult Preflight::histogram(const cv::Mat &image) {
 PreflightResult Preflight::run(const cv::Mat& image) {
 	PreflightResult r;
 	Mat grayImage;
-	cv::cvtColor(image, grayImage, CV_RGB2GRAY);
+	cv::cvtColor(image, grayImage, COLOR_RGB2GRAY);
 	
 	r.histogram = histogram(image);
 	r.focus = focus(grayImage);

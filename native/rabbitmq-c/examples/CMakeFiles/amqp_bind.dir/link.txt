@@ -1,0 +1,1 @@
+/usr/bin/cc  -O3 -DNDEBUG -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/amqp_bind.dir/amqp_bind.c.o CMakeFiles/amqp_bind.dir/utils.c.o CMakeFiles/amqp_bind.dir/unix/platform_utils.c.o  -o amqp_bind  ../librabbitmq/librabbitmq.1.0.1.dylib /usr/lib/libssl.dylib /usr/lib/libcrypto.dylib 

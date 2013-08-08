@@ -496,7 +496,7 @@
 #   undef _TR1_FUNCTIONAL  // Allows the user to #include
                         // <tr1/functional> if he chooses to.
 #  else
-#   include <tr1/tuple>  // NOLINT
+#   include "gtest-tuple.h"  // NOLINT
 #  endif  // !GTEST_HAS_RTTI && GTEST_GCC_VER_ < 40302
 
 # else
