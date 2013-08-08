@@ -19,7 +19,7 @@ import org.scalastyle.sbt._
 object SpringOne2GXBuild extends Build {
 
   override val settings = super.settings ++ Seq(
-    organization := "org.eigengo.springone2gx",
+    organization := "org.eigengo.sogx",
     version := "1.0-SNAPSHOT",
     scalaVersion := "2.10.2"
   )
@@ -39,8 +39,8 @@ object SpringOne2GXBuild extends Build {
       Resolver.typesafeRepo("releases"),
       Resolver.typesafeRepo("snapshots"),
       Resolver.sonatypeRepo("snapshots"),
-      "Spray Releases" at "http://repo.spray.io",
-      "Spray Nightlies" at "http://nightlies.spray.io"
+      "SpringSource Releases" at "http://repo.springsource.org/release",
+      "SpringSource Milestones" at "http://repo.springsource.org/milestone"
     ),
     parallelExecution in Test := false
   ) ++ ScalastylePlugin.Settings
@@ -49,6 +49,8 @@ object SpringOne2GXBuild extends Build {
   import Dependencies._
 
   lazy val core = module("core") settings(
+    libraryDependencies ++= springframework.headless,
+    libraryDependencies ++= springintegration.all,
     libraryDependencies += specs2 % "test"
   )
   lazy val cli = module("cli") dependsOn(core) settings(
@@ -64,7 +66,31 @@ object SpringOne2GXBuild extends Build {
 }
 
 object Dependencies {
-  val springVersion = "4.0.0"
+  object springframework {
+    private val version   = "4.0.0.M2"  //3.2.4.RELEASE
+
+    def dep(artifact: String) = "org.springframework" % artifact % version
+
+    val context = dep("spring-context")
+    val tx = dep("spring-tx")
+    val web = dep("spring-web")
+    val webmvc = dep("spring-webmvc")
+
+    val headless = Seq(context, tx)
+  }
+
+  object springintegration {
+    private val version = "3.0.0.M2"  //2.2.4.RELEASE
+
+    def dep(artifact: String) = "org.springframework.integration" % artifact % version
+
+    val core = dep("spring-integration-core") exclude("org.springframework", "spring-tx")
+    val amqp = dep("spring-integration-amqp") exclude("org.springframework", "spring-tx")
+    val stream = dep("spring-integration-stream") exclude("org.springframework", "spring-tx")
+
+    val all = Seq(core, amqp, stream)
+  }
+
   // to help resolve transitive problems, type:
   //   `sbt dependency-graph`
   //   `sbt test:dependency-tree`
@@ -75,6 +101,5 @@ object Dependencies {
     ExclusionRule(organization = "org.slf4j")
   )
 
-  val springCore    = "org.springframework"   % "spring-core"   % springVersion
   val specs2        = "org.specs2"           %% "specs2"        % "2.0"
 }
