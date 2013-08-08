@@ -1,12 +1,16 @@
 #Building
-To build the application you will need the following tidbits:
+To build the application you will need the following "standard" components, that can be installed automatically on most systems. (Sorry, Windows!)
 
 * cmake    (OS X: ``brew install cmake``)
 * Boost    (OS X: ``brew install boost``)
 * RabbitMQ (OS X: ``brew install rabbitmq``)
-* RabbitMQ-C library
-* RabbitMQ-CPP library
-* OpenCV
+ 
+
+With that out of the way, you will need to build (from sources) the following:
+
+* OpenCV (``master`` from [https://github.com/Itseez/opencv](https://github.com/Itseez/opencv))
+* RabbitMQ-C library (in ``native/rabbitmq-c``)
+* RabbitMQ-CPP library (in ``native/rabbitmq-cpp``)
 
 ###rabbitmq-c
 To build, do the ``cmake`` dance: in some sub-directory of ``rabbitmq-c``, run ``cmake ..``, followed by ``cmake --build .`` and ``sudo make install``.
