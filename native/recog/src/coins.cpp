@@ -46,7 +46,8 @@ std::vector<Coin> CoinCounter::countCpu(const cv::Mat &image) {
 #endif
 	return coins;
 }
-/*
+
+#ifdef GPU
 std::vector<Coin> CoinCounter::countGpu(const cv::Mat &cpuImage) {
 	std::vector<Coin> coins;
 	
@@ -88,8 +89,11 @@ std::vector<Coin> CoinCounter::countGpu(const cv::Mat &cpuImage) {
 	
 	return coins;
 }
-*/
+#endif
+
 std::vector<Coin> CoinCounter::count(const cv::Mat &image) {
-	//if (cv::gpu::getCudaEnabledDeviceCount() > 0) return countGpu(image);
+#ifdef GPU
+	if (cv::gpu::getCudaEnabledDeviceCount() > 0) return countGpu(image);
+#endif
 	return countCpu(image);
 }
