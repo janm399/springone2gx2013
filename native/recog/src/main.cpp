@@ -11,10 +11,10 @@ RabbitRpcServer::RabbitRpcServer(queue, exchange, routingKey) {
 }
 
 std::string Main::handleMessage(const AmqpClient::BasicMessage::ptr_t message, const AmqpClient::Channel::ptr_t channel) {
-	ImageMessage imageMessage(message);
-	
 	Jzon::Object responseJson;
 	try {
+		ImageMessage imageMessage(message);
+		
 		Jzon::Array coinsJson;
 		//Jzon::Array facesJson;
 		auto imageData = imageMessage.headImage();
