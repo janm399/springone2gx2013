@@ -1,7 +1,6 @@
 #include "main.h"
 #include "im.h"
 #include "jzon.h"
-#include <opencv2/gpu/gpu.hpp>
 
 using namespace eigengo::akka;
 
@@ -23,14 +22,6 @@ std::string Main::handleMessage(const AmqpClient::BasicMessage::ptr_t message, c
 		auto coins = coinCounter.count(imageMat);
 		
 		for (auto i = coins.begin(); i != coins.end(); ++i) {
-			/*
-			Jzon::Object faceJson;
-			faceJson.Add("left", face.left);
-			faceJson.Add("top", face.top);
-			faceJson.Add("width", face.width);
-			faceJson.Add("height", face.height);
-			facesJson.Add(faceJson);
-			*/
 			Jzon::Object coinJson;
 			coinJson.Add("center", i->center);
 			coinJson.Add("radius", i->radius);
@@ -54,11 +45,13 @@ std::string Main::handleMessage(const AmqpClient::BasicMessage::ptr_t message, c
 }
 
 void Main::inThreadInit() {
+#ifdef GPU
 	using namespace cv::gpu;
 	int deviceCount = getCudaEnabledDeviceCount();
 	if (deviceCount > 0) {
 		setDevice(0);
 	}
+#endif
 }
 
 int main(int argc, char** argv) {

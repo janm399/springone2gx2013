@@ -2,7 +2,8 @@ cmake_minimum_required (VERSION 2.6)
 project (recog) 
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Modules)
-set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")
+add_definitions("-std=c++11")
 enable_testing()
 
 find_package(Boost REQUIRED COMPONENTS system chrono thread)
