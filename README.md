@@ -1,4 +1,3 @@
-
 #Building
 To build the application you will need the following tidbits:
 
@@ -9,15 +8,15 @@ To build the application you will need the following tidbits:
 * RabbitMQ-CPP library
 * OpenCV
 
-##rabbitmq-c
+###rabbitmq-c
 To build, do the ``cmake`` dance: in some sub-directory of ``rabbitmq-c``, run ``cmake ..``, followed by ``cmake --build .`` and ``sudo make install``.
 
-#rabbitmq-cpp
+###rabbitmq-cpp
 To build, do the ``cmake`` dance: in some sub-directory of ``rabbitmq-cpp``, run ``cmake ..``, followed by ``cmake --build .`` and ``sudo make install``.
 
 Remember that the standard C++ library must match in all the C++ projects. I am using C++11, with ``set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")`` in the ``CMakeLists.txt`` files.
 
-##OpenCV
+###OpenCV
 As of 8th August, to build OpenCV, clone the repository from [https://github.com/Itseez/opencv](https://github.com/Itseez/opencv), then apply the changes in [PR 1244](https://github.com/Itseez/opencv/pull/1244). 
 
 You can do so by applying this patch:
