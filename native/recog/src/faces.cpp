@@ -31,7 +31,8 @@ std::vector<Face> FaceCounter::countCpu(const cv::Mat &image) {
 	}
 	return faces;
 }
-/*
+
+#ifdef GPU
 std::vector<Face> FaceCounter::countGpu(const cv::Mat &image) {
 	using namespace cv;
 	gpu::GpuMat imageGpu;
@@ -52,7 +53,8 @@ std::vector<Face> FaceCounter::countGpu(const cv::Mat &image) {
 
 	return faces;
 }
-*/
+#endif
+
 std::vector<Face> FaceCounter::count(const cv::Mat &image) {
 	//if (cv::gpu::getCudaEnabledDeviceCount() > 0) return countGpu(image);
 	return countCpu(image);
