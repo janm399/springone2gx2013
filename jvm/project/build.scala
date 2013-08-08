@@ -25,8 +25,8 @@ object SpringOne2GXBuild extends Build {
   )
 
   lazy val defaultSettings = Defaults.defaultSettings ++ graphSettings ++ Seq(
-    scalacOptions in Compile ++= Seq("-encoding", "UTF-8", "-target:jvm-1.8", "-deprecation", "-unchecked"),
-    javacOptions in Compile ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint:unchecked", "-Xlint:deprecation", "-Xlint:-options"),
+    scalacOptions in Compile ++= Seq("-encoding", "UTF-8", "-target:jvm-1.7", "-deprecation", "-unchecked"),
+    javacOptions in Compile ++= Seq("-source", "1.8", "-target", "1.7", "-Xlint:unchecked", "-Xlint:deprecation", "-Xlint:-options"),
     // https://github.com/sbt/sbt/issues/702
     javaOptions += "-Djava.util.logging.config.file=logging.properties",
     javaOptions += "-Xmx2G",
