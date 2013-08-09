@@ -81,8 +81,8 @@ object Dependencies {
     val websocket = dep("spring-websocket")
     val messaging = dep("spring-messaging")
 
-    val headless = Seq(context, tx)
-    val web      = Seq(webmvc, messaging, websocket)
+    val headless = Seq(context, tx, messaging)
+    val web      = Seq(webmvc, websocket)
   }
 
   object springintegration {

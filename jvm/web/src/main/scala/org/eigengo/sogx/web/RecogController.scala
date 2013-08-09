@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.{ResponseBody, RequestMapping}
 @Controller
 class RecogController {
 
-  @SubscribeEvent(Array("/coins"))
+  @SubscribeEvent(Array("/app/coins"))
   def coins(): Array[Coin] = {
     val count = (math.random * 10).toInt
 
     (0 to count).map(_ => Coin(math.random, math.random)).toArray
   }
 
-  @RequestMapping(Array("/foo"))
+  @RequestMapping(Array("/app/foo"))
   @ResponseBody
   def index(): String = {
     "Hello, world"
