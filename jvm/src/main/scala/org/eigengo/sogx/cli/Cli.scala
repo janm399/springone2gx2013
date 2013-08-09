@@ -1,7 +1,7 @@
 package org.eigengo.sogx.cli
 
 import org.springframework.context.support.GenericXmlApplicationContext
-import org.eigengo.sogx.core.RecogService
+import org.eigengo.sogx.core.RecogGateway
 
 object Cli {
 
@@ -18,7 +18,7 @@ object Cli {
       println()
     }
 
-    val recogService = ctx.getBean(classOf[RecogService])
+    val recogService = ctx.getBean(classOf[RecogGateway])
 
     run(recogService.recogFrame("foo".getBytes))
     run(recogService.recogFrame("bar".getBytes))

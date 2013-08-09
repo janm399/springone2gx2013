@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- Channels & gateways. No worries about underlying infrastructure -->
-    <int:gateway service-interface="org.eigengo.sogx.core.RecogService" async-executor="executor"/>
+    <int:gateway service-interface="org.eigengo.sogx.core.RecogGateway" async-executor="executor"/>
     <int:channel id="recogRequest"/>
     <int:channel id="recogResponse"/>
     <int:channel id="rawRecogResponse"/>

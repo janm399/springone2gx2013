@@ -6,12 +6,11 @@ import org.springframework.web.servlet.config.annotation.{DefaultServletHandlerC
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages=Array("org.eigengo.sogx"))
-class Application extends WebMvcConfigurerAdapter with WebConfig {
+class Webapp extends WebMvcConfigurerAdapter with WebConfig {
 
   // Allow serving HTML files through the default Servlet
   override def configureDefaultServletHandling(configurer: DefaultServletHandlerConfigurer) = {
     configurer.enable()
   }
-
 
 }

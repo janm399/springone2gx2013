@@ -22,9 +22,11 @@
             stompClient.connect('', '', function(frame) {
                 console.log('Connected ' + frame);
 
-                stompClient.subscribe("/app/coins", function(message) {
+                var id = stompClient.subscribe("/topic/recog/coin.*", function(message) {
+                    console.log("****");
                     console.log(message.body);
                 });
+                console.log(id);
 
             }, function(error) {
                 console.log("STOMP protocol error " + error);
@@ -34,7 +36,7 @@
     }
 
     (function () {
-        var socket = new SockJS('/sogx');
+        var socket = new SockJS('/ws');
         var stompClient = Stomp.over(socket);
 
         var cc = new CoinCounter(stompClient);
