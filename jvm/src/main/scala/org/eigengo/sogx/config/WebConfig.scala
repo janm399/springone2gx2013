@@ -15,7 +15,7 @@ import org.springframework.messaging.SubscribableChannel
 import org.springframework.messaging.support.channel.ExecutorSubscribableChannel
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 
-trait WebConfig extends WebMvcConfigurerAdapter with CoreConfig {
+trait WebConfig extends CoreConfig {
   val messageConverter = new MappingJackson2MessageConverter()
   val userQueueSuffixResolver = new SimpleUserQueueSuffixResolver()
 
@@ -104,11 +104,6 @@ trait WebConfig extends WebMvcConfigurerAdapter with CoreConfig {
     taskScheduler.setThreadNamePrefix("SockJS-")
     taskScheduler.setPoolSize(4)
     taskScheduler
-  }
-
-  // Allow serving HTML files through the default Servlet
-  override def configureDefaultServletHandling(configurer: DefaultServletHandlerConfigurer) = {
-    configurer.enable()
   }
 
 }

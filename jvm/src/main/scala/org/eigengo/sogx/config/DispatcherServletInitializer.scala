@@ -6,11 +6,11 @@ import javax.servlet.{ServletContext, ServletRegistration}
 class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
   protected def getRootConfigClasses: Array[Class[_]] = {
-    Array[Class[_]](classOf[WebConfig])
+    Array[Class[_]](classOf[Application])
   }
 
   protected def getServletConfigClasses: Array[Class[_]] = {
-    Array[Class[_]](classOf[WebConfig])
+    Array[Class[_]](classOf[Application])
   }
 
   protected def getServletMappings: Array[String] = {
