@@ -18,6 +18,7 @@ void RabbitRpcServer::handleEnvelope(const AmqpClient::Envelope::ptr_t envelope,
 	
 	// send the response
 	BasicMessage::ptr_t response = BasicMessage::Create(body);
+	response->ContentType("application/json");
 	response->CorrelationId(request->CorrelationId());
 	channel->BasicPublish("", replyTo, response, true);
 }
@@ -30,11 +31,11 @@ void RabbitRpcServer::runBlocking() {
 		channel->BindQueue(queue, exchange, routingKey);
 		std::string tag = channel->BasicConsume(queue, "", true, true, false, 1);
 			
-			try {
-		  // consume the request message
-		  Envelope::ptr_t env = channel->BasicConsumeMessage(tag);
-				handleEnvelope(env, channel);
-			} catch (const std::runtime_error&) {
+		try {
+			// consume the request message
+			Envelope::ptr_t env = channel->BasicConsumeMessage(tag);
+			handleEnvelope(env, channel);
+		} catch (const std::runtime_error&) {
 		  break;
 		}
 	}

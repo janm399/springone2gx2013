@@ -3,17 +3,25 @@ package org.eigengo.sogx.cli
 import org.springframework.context.support.GenericXmlApplicationContext
 import org.eigengo.sogx.core.RecogService
 
-object Cli extends App {
+object Cli {
 
-  val ctx = new GenericXmlApplicationContext(
-    "classpath*:/META-INF/spring/integration/module-context.xml",
-    "classpath*:/META-INF/spring/module-context.xml"
-  )
+  def main(args: Array[String]): Unit = {
+    val ctx = new GenericXmlApplicationContext(
+      "classpath*:/META-INF/spring/integration/module-context.xml",
+      "classpath*:/META-INF/spring/module-context.xml"
+    )
 
-  val recogService = ctx.getBean(classOf[RecogService])
+    def run[U](f: => U): Unit = {
+      println(">>")
+      println(f)
+      println("<<")
+      println()
+    }
 
-  recogService.recogFrame("foo".getBytes)
-  recogService.recogFrame("bar".getBytes)
-  recogService.recogFrame("baz".getBytes)
+    val recogService = ctx.getBean(classOf[RecogService])
 
+    run(recogService.recogFrame("foo".getBytes))
+    run(recogService.recogFrame("bar".getBytes))
+    run(recogService.recogFrame("baz".getBytes))
+  }
 }

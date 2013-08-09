@@ -51,6 +51,7 @@ object SpringOne2GXBuild extends Build {
   lazy val core = module("core") settings(
     libraryDependencies ++= springframework.headless,
     libraryDependencies ++= springintegration.all,
+    libraryDependencies +=  jackson,
     libraryDependencies += specs2 % "test"
   )
   lazy val cli = module("cli") dependsOn(core) settings(
@@ -101,5 +102,7 @@ object Dependencies {
     ExclusionRule(organization = "org.slf4j")
   )
 
-  val specs2        = "org.specs2"           %% "specs2"        % "2.0"
+  //val jackson       = "org.codehaus.jackson"  % "jackson-mapper-asl" % "2.2.2"
+  val jackson       = "com.fasterxml.jackson.core"  % "jackson-databind" % "2.2.2"
+  val specs2        = "org.specs2"           %% "specs2"             % "2.0"
 }
