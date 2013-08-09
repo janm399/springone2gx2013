@@ -3,13 +3,15 @@ package org.eigengo.sogx.config
 import org.springframework.messaging.simp.handler.{UserDestinationMessageHandler, SimpleBrokerMessageHandler, AnnotationMethodMessageHandler, SimpleUserQueueSuffixResolver}
 import org.springframework.web.socket.WebSocketHandler
 import org.springframework.context.annotation.{Profile, Bean}
-import org.springframework.messaging.simp.stomp.{StompBrokerRelayMessageHandler, StompWebSocketHandler}
+import org.springframework.messaging.simp.stomp.{StompProtocolHandler, StompBrokerRelayMessageHandler}
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping
-import org.springframework.web.socket.sockjs.support.{SockJsHttpRequestHandler, DefaultSockJsService}
 import java.util.Collections
 import java.util
 import org.springframework.messaging.SubscribableChannel
 import org.springframework.messaging.support.channel.ExecutorSubscribableChannel
+import org.springframework.web.socket.sockjs.transport.handler.DefaultSockJsService
+import org.springframework.web.socket.sockjs.SockJsHttpRequestHandler
+import org.springframework.messaging.handler.websocket.SubProtocolWebSocketHandler
 
 trait WebConfig extends CoreConfig {
   val userQueueSuffixResolver = new SimpleUserQueueSuffixResolver()
@@ -29,7 +31,14 @@ trait WebConfig extends CoreConfig {
   // WebSocketHandler supporting STOMP messages
   @Bean
   def webSocketHandler(): WebSocketHandler = {
-    new StompWebSocketHandler(dispatchChannel())
+    val stompHandler = new StompProtocolHandler()
+    stompHandler.setUserQueueSuffixResolver(userQueueSuffixResolver)
+
+    val webSocketHandler = new SubProtocolWebSocketHandler(dispatchChannel())
+    webSocketHandler.setDefaultProtocolHandler(stompHandler)
+    webSocketHandlerChannel().subscribe(webSocketHandler)
+
+    webSocketHandler
   }
 
   // MessageHandler for processing messages by delegating to @Controller annotated methods

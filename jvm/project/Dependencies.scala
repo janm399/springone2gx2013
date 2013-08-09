@@ -2,7 +2,7 @@ import sbt._
 
 object Dependencies {
   object springframework {
-    private val version   = "4.0.0.M2"  //3.2.4.RELEASE
+    private val version   = "4.0.0.BUILD-SNAPSHOT"  //3.2.4.RELEASE
 
     def dep(artifact: String) = "org.springframework" % artifact % version
 
@@ -19,7 +19,7 @@ object Dependencies {
   }
 
   object springintegration {
-    private val version = "3.0.0.M2"  //2.2.4.RELEASE
+    private val version = "3.0.0.BUILD-SNAPSHOT"  //2.2.4.RELEASE
 
     def dep(artifact: String) = "org.springframework.integration" % artifact % version
 
