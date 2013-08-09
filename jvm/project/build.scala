@@ -52,12 +52,13 @@ object SpringOne2GXBuild extends Build {
     libraryDependencies ++= springframework.headless,
     libraryDependencies ++= springintegration.all,
     libraryDependencies ++= jackson.all,
-    libraryDependencies += specs2 % "test"
+    libraryDependencies +=  specs2 % "test"
   )
   lazy val cli = module("cli") dependsOn(core) settings(
   )
   lazy val web = module("web") dependsOn(core) settings(
-    libraryDependencies += specs2 % "test"
+    libraryDependencies ++= springframework.web,
+    libraryDependencies +=  specs2 % "test"
   )
   lazy val root = Project(id = "parent", base = file("."), settings = defaultSettings) settings (
     mainClass in (Compile, run) := Some("org.eigengo.springone2gx.main.Main")
@@ -72,12 +73,13 @@ object Dependencies {
 
     def dep(artifact: String) = "org.springframework" % artifact % version
 
-    val context = dep("spring-context")
-    val tx = dep("spring-tx")
-    val web = dep("spring-web")
-    val webmvc = dep("spring-webmvc")
+    val context   = dep("spring-context")
+    val tx        = dep("spring-tx")
+    val webmvc    = dep("spring-webmvc")
+    val messaging = dep("spring-messaging")
 
     val headless = Seq(context, tx)
+    val web      = Seq(webmvc, messaging)
   }
 
   object springintegration {
@@ -85,8 +87,8 @@ object Dependencies {
 
     def dep(artifact: String) = "org.springframework.integration" % artifact % version
 
-    val core = dep("spring-integration-core") exclude("org.springframework", "spring-tx")
-    val amqp = dep("spring-integration-amqp") exclude("org.springframework", "spring-tx")
+    val core   = dep("spring-integration-core") exclude("org.springframework", "spring-tx")
+    val amqp   = dep("spring-integration-amqp") exclude("org.springframework", "spring-tx")
     val stream = dep("spring-integration-stream") exclude("org.springframework", "spring-tx")
 
     val all = Seq(core, amqp, stream)
@@ -94,10 +96,10 @@ object Dependencies {
 
   object jackson {
     private val version = "2.2.2"
-    val scalaModule = "com.fasterxml.jackson.module" %% "jackson-module-scala" % version
+    //val scalaModule = "com.fasterxml.jackson.module" %% "jackson-module-scala" % version
     val core        = "com.fasterxml.jackson.core"    % "jackson-databind"     % version
 
-    val all = Seq(core, scalaModule)
+    val all = Seq(core)
   }
 
   // to help resolve transitive problems, type:
