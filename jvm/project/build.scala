@@ -51,7 +51,7 @@ object SpringOne2GXBuild extends Build {
   lazy val core = module("core") settings(
     libraryDependencies ++= springframework.headless,
     libraryDependencies ++= springintegration.all,
-    libraryDependencies +=  jackson,
+    libraryDependencies ++= jackson.all,
     libraryDependencies += specs2 % "test"
   )
   lazy val cli = module("cli") dependsOn(core) settings(
@@ -92,6 +92,14 @@ object Dependencies {
     val all = Seq(core, amqp, stream)
   }
 
+  object jackson {
+    private val version = "2.2.2"
+    val scalaModule = "com.fasterxml.jackson.module" %% "jackson-module-scala" % version
+    val core        = "com.fasterxml.jackson.core"    % "jackson-databind"     % version
+
+    val all = Seq(core, scalaModule)
+  }
+
   // to help resolve transitive problems, type:
   //   `sbt dependency-graph`
   //   `sbt test:dependency-tree`
@@ -102,7 +110,6 @@ object Dependencies {
     ExclusionRule(organization = "org.slf4j")
   )
 
-  //val jackson       = "org.codehaus.jackson"  % "jackson-mapper-asl" % "2.2.2"
-  val jackson       = "com.fasterxml.jackson.core"  % "jackson-databind" % "2.2.2"
+
   val specs2        = "org.specs2"           %% "specs2"             % "2.0"
 }
