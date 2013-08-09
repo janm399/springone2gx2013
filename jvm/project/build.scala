@@ -58,6 +58,8 @@ object SpringOne2GXBuild extends Build {
   )
   lazy val web = module("web") dependsOn(core) settings(
     libraryDependencies ++= springframework.web,
+    libraryDependencies ++= reactor.all,
+    libraryDependencies +=  servletApi % "provided",
     libraryDependencies +=  specs2 % "test"
   )
   lazy val root = Project(id = "parent", base = file("."), settings = defaultSettings) settings (
@@ -76,10 +78,11 @@ object Dependencies {
     val context   = dep("spring-context")
     val tx        = dep("spring-tx")
     val webmvc    = dep("spring-webmvc")
+    val websocket = dep("spring-websocket")
     val messaging = dep("spring-messaging")
 
     val headless = Seq(context, tx)
-    val web      = Seq(webmvc, messaging)
+    val web      = Seq(webmvc, messaging, websocket)
   }
 
   object springintegration {
@@ -102,6 +105,15 @@ object Dependencies {
     val all = Seq(core)
   }
 
+  object reactor {
+    private val version = "1.0.0.M1"
+
+    val core   = "org.projectreactor" % "reactor-core" % version
+    val tcp    = "org.projectreactor" % "reactor-tcp"  % version
+
+    val all = Seq(core, tcp)
+  }
+
   // to help resolve transitive problems, type:
   //   `sbt dependency-graph`
   //   `sbt test:dependency-tree`
@@ -112,6 +124,6 @@ object Dependencies {
     ExclusionRule(organization = "org.slf4j")
   )
 
-
+  val servletApi    = "javax.servlet"         % "javax.servlet-api"  % "3.1.0"
   val specs2        = "org.specs2"           %% "specs2"             % "2.0"
 }
