@@ -9,9 +9,6 @@
 		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- for the CLI application -->
-    <bean id="executor" class="org.springframework.core.task.SyncTaskExecutor"/>
-
     <!-- Channels & gateways. No worries about underlying infrastructure -->
     <int:gateway service-interface="org.eigengo.sogx.core.RecogService" async-executor="executor"/>
     <int:channel id="recogRequest"/>
