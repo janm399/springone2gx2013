@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Coin counter</title>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- 3rd party -->
+<script src="assets/js/sockjs-0.3.4.js"></script>
+<script src="assets/js/stomp.js"></script>
+
+<!-- application -->
+<script type="text/javascript">
+    function CoinCounter(stompClient) {
+        var self = this;
+
+
+        self.connect = function() {
+            stompClient.connect('', '', function(frame) {
+                console.log('Connected ' + frame);
+
+                var userName = frame.headers['user-name'];
+                var queueSuffix = frame.headers['queue-suffix'];
+
+                self.username(userName);
+
+                stompClient.subscribe("/coins", function(message) {
+                    self.portfolio().loadPositions(JSON.parse(message.body));
+                });
+                /*
+                 stompClient.subscribe("/queue/errors" + queueSuffix, function(message) {
+                 self.pushNotification("Error " + message.body);
+                 });
+                 */
+            }, function(error) {
+                console.log("STOMP protocol error " + error);
+            });
+        }
+
+    }
+
+    (function () {
+        var socket = new SockJS('/sogx');
+        var stompClient = Stomp.over(socket);
+
+        var cc = new CoinCounter(stompClient);
+
+        cc.connect();
+/*
+        appModel.connect();
+        appModel.pushNotification("Trade results take a 2-3 second simulated delay. Notifications will appear.");
+*/
+    })();
+</script>
+
+</body>
+</html>
