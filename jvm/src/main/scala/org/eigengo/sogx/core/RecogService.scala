@@ -1,6 +1,7 @@
 package org.eigengo.sogx.core
 
 import org.springframework.integration.annotation.Gateway
+import org.eigengo.sogx.CoinResponse
 
 trait RecogService {
 

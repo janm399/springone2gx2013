@@ -1,9 +1,9 @@
 package org.eigengo.sogx.web
 
 import org.springframework.stereotype.Controller
-import org.eigengo.sogx.core.Coin
 import org.springframework.messaging.simp.annotation.SubscribeEvent
 import org.springframework.web.bind.annotation.{ResponseBody, RequestMapping}
+import org.eigengo.sogx.Coin
 
 @Controller
 class RecogController {

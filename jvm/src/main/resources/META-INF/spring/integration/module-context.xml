@@ -18,7 +18,7 @@
 
     <int:transformer input-channel="rawBytesRecogResponse" output-channel="rawRecogResponse" expression="new String(payload)"/>
     <int:json-to-object-transformer input-channel="rawRecogResponse" output-channel="recogResponse"
-                                    type="org.eigengo.sogx.core.CoinResponse" auto-startup="true"/>
+                                    type="org.eigengo.sogx.CoinResponse" auto-startup="true"/>
 
     <int-amqp:outbound-gateway request-channel="recogRequest" reply-channel="rawBytesRecogResponse"
                                exchange-name="sogx.exchange" routing-key="sogx.recog.key"

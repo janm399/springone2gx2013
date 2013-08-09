@@ -1,4 +1,4 @@
-package org.eigengo.sogx.core
+package org.eigengo.sogx
 
 import com.fasterxml.jackson.annotation.{JsonProperty, JsonCreator}
 

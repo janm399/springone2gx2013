@@ -1,4 +1,4 @@
-package org.eigengo.sogx.core
+package org.eigengo.sogx.config
 
 import org.springframework.messaging.SubscribableChannel
 import org.springframework.messaging.support.channel.ExecutorSubscribableChannel
