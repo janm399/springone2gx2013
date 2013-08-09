@@ -38,6 +38,10 @@ std::string Main::handleMessage(const AmqpClient::BasicMessage::ptr_t message, c
 		// bantha poodoo!
 		responseJson.Add("succeeded", false);
 	}
+
+#ifdef DEBUG
+	std::cout << message->ReplyTo() << std::endl;
+#endif
 	Jzon::Writer writer(responseJson, Jzon::NoFormat);
 	writer.Write();
 
