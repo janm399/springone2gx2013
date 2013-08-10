@@ -8,7 +8,7 @@ function CoinCtrl($scope) {
 
         var id = stompClient.subscribe("/topic/recog/coin.*", function(message) {
             $scope.$apply(function() {
-                $scope.coins = message.body;
+                $scope.coins = JSON.parse(message.body);
             });
         });
         console.log(id);
