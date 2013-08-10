@@ -26,8 +26,9 @@ std::vector<Coin> CoinCounter::countCpu(const cv::Mat &image) {
 	
 	for (size_t i = 0; i < circles.size(); i++) {
 		Coin coin;
-		coin.center = circles[i][0];
-		coin.radius = circles[i][1];
+		coin.center.x = (int)circles[i][0];
+		coin.center.y = (int)circles[i][1];
+		coin.radius = (int)circles[i][2];
 		coins.push_back(coin);
 	}
 

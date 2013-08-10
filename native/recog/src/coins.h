@@ -6,9 +6,14 @@
 
 namespace eigengo { namespace akka {
 
+	struct Point {
+		int x;
+		int y;
+	};
+
 	struct Coin {
-		double center;
-		double radius;
+		Point center;
+		int radius;
 	};
 	
 	class CoinCounter {

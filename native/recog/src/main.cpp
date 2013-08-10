@@ -23,7 +23,10 @@ std::string Main::handleMessage(const AmqpClient::BasicMessage::ptr_t message, c
 		
 		for (auto i = coins.begin(); i != coins.end(); ++i) {
 			Jzon::Object coinJson;
-			coinJson.Add("center", i->center);
+			Jzon::Object centerJson;
+			centerJson.Add("x", i->center.x);
+			centerJson.Add("y", i->center.y);
+			coinJson.Add("center", centerJson);
 			coinJson.Add("radius", i->radius);
 			coinsJson.Add(coinJson);
 		}
