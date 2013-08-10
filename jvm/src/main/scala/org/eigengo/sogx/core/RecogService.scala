@@ -16,8 +16,7 @@ class RecogService (messagingTemplate: MessageSendingOperations[String]) {
     val count = random.nextInt(10)
 
     val coinResponse = CoinResponse((0 to count).map(_ => Coin((random.nextInt(width), random.nextInt(height)), random.nextInt(100))).toArray, true)
-    messagingTemplate.convertAndSend(
-      s"/topic/recog/coin.${UUID.randomUUID()}", coinResponse)
+    messagingTemplate.convertAndSend(s"/topic/recog/coin.${UUID.randomUUID()}", coinResponse)
   }
 
 }
