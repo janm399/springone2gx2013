@@ -8,7 +8,12 @@ version := "1.0"
 
 scalaVersion := "2.10.2"
 
-resolvers += "Spring Snapshots" at "http://repo.springsource.org/snapshot"
+resolvers ++= Seq(
+//    "Spring Libs Releases" at "http://repo.springsource.org/libs-release",
+	"Spring Releases"   at "http://repo.springsource.org/release",
+	"Spring Milestones" at "http://repo.springsource.org/milestone",
+	"Spring Snapshots"  at "http://repo.springsource.org/snapshot"
+)
 
 libraryDependencies ++= springframework.all ++ springintegration.all ++ jackson.all ++ reactor.all
 
