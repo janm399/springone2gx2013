@@ -7,14 +7,15 @@ import org.eigengo.sogx.Coin
 
 @Controller
 class RecogController {
-
+/*
   @SubscribeEvent(Array("/app/coins"))
   def coins(): Array[Coin] = {
     val count = (math.random * 10).toInt
 
     (0 to count).map(_ => Coin(math.random, math.random)).toArray
   }
-
+*/
+  
   @RequestMapping(Array("/app/foo"))
   @ResponseBody
   def index(): String = {

@@ -13,7 +13,8 @@ import org.springframework.web.socket.sockjs.transport.handler.DefaultSockJsServ
 import org.springframework.web.socket.sockjs.SockJsHttpRequestHandler
 import org.springframework.messaging.handler.websocket.SubProtocolWebSocketHandler
 
-trait WebConfig extends CoreConfig {
+trait WebConfig {
+  this: CoreConfig =>
   val userQueueSuffixResolver = new SimpleUserQueueSuffixResolver()
 
   @Bean

@@ -25,16 +25,14 @@ trait CoreConfig {
 
   // MessagingTemplate (and MessageChannel) to dispatch messages to for further processing
   // All MessageHandler beans above subscribe to this channel
-  @Bean
-  def dispatchMessagingTemplate(): SimpMessageSendingOperations = {
+  @Bean def dispatchMessagingTemplate(): SimpMessageSendingOperations = {
     val template = new SimpMessagingTemplate(dispatchChannel())
     template.setMessageConverter(messageConverter)
     template
   }
 
   // Task executor for use in SockJS (heartbeat frames, session timeouts)
-  @Bean
-  def taskScheduler(): ThreadPoolTaskScheduler = {
+  @Bean def taskScheduler(): ThreadPoolTaskScheduler = {
     val taskScheduler = new ThreadPoolTaskScheduler()
     taskScheduler.setThreadNamePrefix("SockJS-")
     taskScheduler.setPoolSize(4)
@@ -42,8 +40,7 @@ trait CoreConfig {
   }
 
   // services
-  @Bean
-  def recogService(): RecogService = {
+  @Bean def recogService(): RecogService = {
     val service = new RecogService(dispatchMessagingTemplate())
     taskScheduler().scheduleAtFixedRate(new Runnable {
       def run() {
