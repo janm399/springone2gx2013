@@ -1,5 +1,5 @@
 function CoinCtrl($scope) {
-    $scope.model = "";
+    $scope.coins = {};
 
     var socket = new SockJS('/ws');
     var stompClient = Stomp.over(socket);
@@ -7,19 +7,14 @@ function CoinCtrl($scope) {
         console.log('Connected ' + frame);
 
         var id = stompClient.subscribe("/topic/recog/coin.*", function(message) {
-            console.log("***");
-            $scope.coins = message.body;
-            console.log($scope.coins);
+            $scope.$apply(function() {
+                $scope.coins = message.body;
+            });
         });
         console.log(id);
 
     }, function(error) {
         console.log("STOMP protocol error " + error);
     });
-
-
-    $scope.coins = function() {
-        return "sdfsdf" + $scope.model;
-    }
 
 }
