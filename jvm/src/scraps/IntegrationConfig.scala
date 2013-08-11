@@ -1,15 +1,14 @@
 package org.eigengo.sogx.config
 
 import org.springframework.context.annotation.Bean
-import org.springframework.integration.MessageChannel
+import org.springframework.integration.{SpringIntegration, MessageChannel}
 import org.springframework.integration.gateway.GatewayProxyFactoryBean
-import org.springframework.integration.config.SpringIntegration
-import org.eigengo.sogx.core.RecogGateway
 import java.util.concurrent.Executor
 
 trait IntegrationConfig {
   import SpringIntegration.channels._
   import SpringIntegration.gateways._
+  import SpringIntegration.messageflow._
 
   def asyncExecutor(): Executor
 
@@ -27,6 +26,9 @@ trait IntegrationConfig {
 
   @Bean
   def recogGateway(): GatewayProxyFactoryBean = {
-    gatewayProxy[RecogGateway].withAsyncExecutor(asyncExecutor())
+    gatewayProxy[RecogGateway].
+      withMethod(_.recogFrame, requestChannel = recogRequest(), replyChannel = recogResponse()).
+      withAsyncExecutor(asyncExecutor())
   }
+
 }

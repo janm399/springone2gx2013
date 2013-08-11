@@ -1,4 +1,4 @@
-package org.springframework.integration.config
+package org.springframework.integration.gateway
 
 import scala.reflect.ClassTag
 

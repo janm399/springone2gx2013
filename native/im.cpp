@@ -1,6 +1,8 @@
 #include "im.h"
 #include <amqp.h>
 
+#define SIMPLE_MESSAGE
+
 using namespace eigengo::akka;
 
 ImageMessage::ImageMessage(AmqpClient::BasicMessage::ptr_t message) throw (ImageMessageException) {
@@ -8,6 +10,12 @@ ImageMessage::ImageMessage(AmqpClient::BasicMessage::ptr_t message) throw (Image
 	unsigned char* bodyChars = static_cast<unsigned char*>(body.bytes);
 	std::vector<unsigned char> bodyVector(bodyChars, bodyChars + body.len);
 
+#ifdef SIMPLE_MESSAGE
+	std::vector<unsigned char> image(bodyVector.begin(), bodyVector.end());
+	m_images.push_back(image);
+#endif
+
+#ifndef SIMPLE_MESSAGE
 	assertMagic(bodyVector);            // 4
 	int count = read(bodyVector, 4);    // 8
 
@@ -20,7 +28,7 @@ ImageMessage::ImageMessage(AmqpClient::BasicMessage::ptr_t message) throw (Image
 
 		dataStart += size; 
 	}
-
+#endif
 }
 
 std::vector<Image> ImageMessage::images() throw () {

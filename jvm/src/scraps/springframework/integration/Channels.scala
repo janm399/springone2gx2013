@@ -1,6 +1,5 @@
-package org.springframework.integration.config
+package org.springframework.integration
 
-import org.springframework.integration.MessageChannel
 import org.springframework.integration.channel.DirectChannel
 
 trait Channels {

@@ -9,22 +9,18 @@
 		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- Channels & gateways. No worries about underlying infrastructure -->
-    <int:gateway service-interface="org.eigengo.sogx.core.RecogGateway" async-executor="executor"/>
-    <int:channel id="recogRequest"/>
-    <int:channel id="recogResponse"/>
-    <int:channel id="rawRecogResponse"/>
-    <int:channel id="rawBytesRecogResponse"/>
-
-    <int:transformer input-channel="rawBytesRecogResponse" output-channel="rawRecogResponse" expression="new String(payload)"/>
-    <int:json-to-object-transformer input-channel="rawRecogResponse" output-channel="recogResponse"
-                                    type="org.eigengo.sogx.CoinResponse" auto-startup="true"/>
-
-    <int-amqp:outbound-gateway request-channel="recogRequest" reply-channel="rawBytesRecogResponse"
-                               exchange-name="sogx.exchange" routing-key="sogx.recog.key"
-                               reply-timeout="250"
-                               mapped-reply-headers="*" mapped-request-headers="*"
-                               amqp-template="amqpTemplate"/>
+    <int:chain input-channel="recogRequest">
+        <int:service-activator method="decodeFrame">
+            <bean class="org.eigengo.sogx.core.ChunkDecoder"/>
+        </int:service-activator>
+        <int-amqp:outbound-gateway exchange-name="sogx.exchange" routing-key="sogx.recog.key"
+                                   reply-timeout="250"
+                                   mapped-reply-headers="*" mapped-request-headers="*"
+                                   amqp-template="amqpTemplate"/>
+        <int:transformer expression="new String(payload)"/>
+        <int:json-to-object-transformer type="org.eigengo.sogx.CoinResponse" />
+        <int:service-activator ref="recogServiceActivator" method="onCoinResponse"/>
+    </int:chain>
 
     <!-- RabbitMQ connection details -->
 

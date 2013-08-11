@@ -6,15 +6,25 @@ import org.springframework.context.annotation.Bean
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.messaging.simp.{SimpMessagingTemplate, SimpMessageSendingOperations}
 import org.springframework.messaging.support.converter.MappingJackson2MessageConverter
-import org.eigengo.sogx.core.RecogService
+import org.eigengo.sogx.core.{RecogServiceActivator, RecogService}
 import java.util.concurrent.Executor
+import org.springframework.integration.MessageChannel
+import org.springframework.integration.channel.DirectChannel
 
 trait CoreConfig {
   val messageConverter = new MappingJackson2MessageConverter()
 
   // implementations must provide appropriate Executor
-  def asyncExecutor(): Executor
+  @Bean def asyncExecutor(): Executor
 
+  // implementations must provide RecogServiceActivator, which will be executed when we have the coins from the
+  // video frames
+  @Bean def recogServiceActivator(): RecogServiceActivator
+
+  // the channel onto which the requests will go
+  @Bean def recogRequest(): MessageChannel = new DirectChannel()
+
+  // the channel that connects to the WS clients
   @Bean def dispatchChannel(): SubscribableChannel = {
      new ExecutorSubscribableChannel(asyncExecutor())
   }
@@ -37,10 +47,10 @@ trait CoreConfig {
 
   // services
   @Bean def recogService(): RecogService = {
-    val service = new RecogService(dispatchMessagingTemplate())
+    val service = new RecogService(recogRequest(), dispatchMessagingTemplate())
     taskScheduler().scheduleAtFixedRate(new Runnable {
       def run() {
-        service.sendQuotes()
+        service.dummy()
       }
     }, 1000L)
 
