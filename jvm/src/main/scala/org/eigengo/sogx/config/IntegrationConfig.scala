@@ -2,27 +2,25 @@ package org.eigengo.sogx.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.integration.MessageChannel
-import org.springframework.integration.channel.DirectChannel
 import org.springframework.integration.gateway.GatewayProxyFactoryBean
-import org.springframework.integration.config.SpringIntegrationConfigurer
+import org.springframework.integration.config.SpringIntegration
 import org.eigengo.sogx.core.RecogGateway
 import java.util.concurrent.Executor
 
-trait IntegrationConfig extends SpringIntegrationConfigurer {
+trait IntegrationConfig {
+  import SpringIntegration.channels._
+  import SpringIntegration.gateways._
+
   def asyncExecutor(): Executor
 
   @Bean
-  def recogRequest(): MessageChannel = {
-    new DirectChannel()
-  }
+  def recogRequest(): MessageChannel = directChannel()
 
   @Bean
-  def recogResponse(): MessageChannel = {
-    new DirectChannel()
-  }
+  def recogResponse(): MessageChannel = directChannel()
 
   @Bean
-  def recogGateway(): GatewayProxyFactoryBean =  {
+  def recogGateway(): GatewayProxyFactoryBean = {
     gatewayProxy[RecogGateway].withAsyncExecutor(asyncExecutor())
   }
 }
