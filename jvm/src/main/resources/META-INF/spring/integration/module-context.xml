@@ -10,9 +10,10 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <int:chain input-channel="recogRequest">
-        <int:service-activator method="decodeFrame">
+        <int:service-activator id="activator" method="decodeFrame">
             <bean class="org.eigengo.sogx.core.ChunkDecoder"/>
         </int:service-activator>
+        <int:splitter id="splitter" apply-sequence="false"/>
         <int-amqp:outbound-gateway exchange-name="sogx.exchange" routing-key="sogx.recog.key"
                                    reply-timeout="250"
                                    mapped-reply-headers="*" mapped-request-headers="*"

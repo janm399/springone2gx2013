@@ -11,19 +11,19 @@ import org.eigengo.sogx.cli.Utils
 
 @Controller
 class RecogController @Autowired()(recogService: RecogService) {
-/*
-  @SubscribeEvent(Array("/app/coins"))
-  def coins(): Array[Coin] = {
-    val count = (math.random * 10).toInt
 
-    (0 to count).map(_ => Coin(math.random, math.random)).toArray
-  }
-*/
-  
   @RequestMapping(Array("/app/foo"))
   @ResponseBody
-  def index(): String = {
+  def foo(): String = {
     Utils.readAll("/coins2.png")(recogService.image(UUID.randomUUID(), _))
+    "Hello, world"
+  }
+
+  @RequestMapping(Array("/app/bar"))
+  @ResponseBody
+  def bar(): String = {
+    val id = UUID.randomUUID()
+    Utils.readChunks("/coins.mp4", 64)(recogService.h264Frame(id, _))
     "Hello, world"
   }
 

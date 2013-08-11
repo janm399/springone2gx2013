@@ -57,6 +57,7 @@ object Dependencies {
     ExclusionRule(organization = "org.slf4j")
   )
 
+  val xuggler       = "xuggle"                % "xuggle-xuggler"     % "5.4"
   val servletApi    = "javax.servlet"         % "javax.servlet-api"  % "3.1.0"
   val specs2        = "org.specs2"           %% "specs2"             % "2.0"
 }

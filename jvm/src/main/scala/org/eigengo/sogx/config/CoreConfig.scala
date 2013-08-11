@@ -47,14 +47,7 @@ trait CoreConfig {
 
   // services
   @Bean def recogService(): RecogService = {
-    val service = new RecogService(recogRequest(), dispatchMessagingTemplate())
-    taskScheduler().scheduleAtFixedRate(new Runnable {
-      def run() {
-        service.dummy()
-      }
-    }, 1000L)
-
-    service
+    new RecogService(recogRequest(), dispatchMessagingTemplate())
   }
 
 }
