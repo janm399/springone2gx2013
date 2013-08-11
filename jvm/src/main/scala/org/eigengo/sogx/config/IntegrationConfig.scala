@@ -20,6 +20,12 @@ trait IntegrationConfig {
   def recogResponse(): MessageChannel = directChannel()
 
   @Bean
+  def rawRecogResponse(): MessageChannel = directChannel()
+
+  @Bean
+  def rawBytesRecogResponse(): MessageChannel = directChannel()
+
+  @Bean
   def recogGateway(): GatewayProxyFactoryBean = {
     gatewayProxy[RecogGateway].withAsyncExecutor(asyncExecutor())
   }
