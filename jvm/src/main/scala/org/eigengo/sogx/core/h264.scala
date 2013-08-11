@@ -5,14 +5,16 @@ import javax.imageio.ImageIO
 import java.io.{FileOutputStream, File, ByteArrayOutputStream}
 import java.util.UUID
 import java.util
+import scala.collection._
 
 object H264Decoder {
 
+  val sessions = mutable.HashMap[UUID, H264DecoderContext]()
+
   def decodeFrames(session: UUID, chunk: Array[Byte]): util.Collection[Array[Byte]] = {
-    val tf = new TemporaryFile(session)
     val buffer: util.List[Array[Byte]] = new util.ArrayList[Array[Byte]]()
-    val dc = new H264DecoderContext(tf)(buffer.add)
-    dc.decode(chunk)
+    sessions.getOrElseUpdate(session, new H264DecoderContext(session)).decode(chunk)(buffer.add)
+    println("Decoded " + buffer.size())
     buffer
   }
 
@@ -27,9 +29,9 @@ object H264Decoder {
  * @param f the function to be applied to every decoded frame
  * @tparam U return type
  */
-class H264DecoderContext[U](tf: TemporaryFile)(f: Array[Byte] => U) {
+class H264DecoderContext(val session: UUID) {
   val container = IContainer.make()
-
+  val tf: TemporaryFile = new TemporaryFile(session)
   var isOpen = false
   var videoStream: IStream     = _
   var videoCoder: IStreamCoder = _
@@ -50,7 +52,7 @@ class H264DecoderContext[U](tf: TemporaryFile)(f: Array[Byte] => U) {
     isOpen
   }
 
-  def decode(chunk: Array[Byte]): Unit = {
+  def decode[U](chunk: Array[Byte])(f: Array[Byte] => U): Unit = {
     tf.write(chunk)
 
     if (!open()) return
@@ -88,7 +90,7 @@ class H264DecoderContext[U](tf: TemporaryFile)(f: Array[Byte] => U) {
  */
 private[core] class TemporaryFile(session: UUID) /* extends UtterlyMiserable */ {
   //val file: File = File.createTempFile("video", "mp4")
-  val file: File = new File("/Users/janmachacek/x.mp4")
+  val file: File = new File(s"/Users/janmachacek/$session.mp4")
   file.deleteOnExit()
   var open: Boolean = true
   private val fos: FileOutputStream = new FileOutputStream(file, true)

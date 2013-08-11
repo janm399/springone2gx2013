@@ -2,7 +2,7 @@ package org.eigengo.sogx.web
 
 import org.springframework.stereotype.Controller
 import org.springframework.messaging.simp.annotation.SubscribeEvent
-import org.springframework.web.bind.annotation.{ResponseBody, RequestMapping}
+import org.springframework.web.bind.annotation.{RequestParam, ResponseBody, RequestMapping}
 import org.eigengo.sogx.Coin
 import org.springframework.beans.factory.annotation.Autowired
 import org.eigengo.sogx.core.RecogService
@@ -21,9 +21,9 @@ class RecogController @Autowired()(recogService: RecogService) {
 
   @RequestMapping(Array("/app/bar"))
   @ResponseBody
-  def bar(): String = {
+  def bar(@RequestParam(defaultValue = "64") bps: Int): String = {
     val id = UUID.randomUUID()
-    Utils.readChunks("/coins.mp4", 64)(recogService.h264Frame(id, _))
+    Utils.readChunks("/coins.mp4", bps)(recogService.h264Frame(id, _))
     "Hello, world"
   }
 
