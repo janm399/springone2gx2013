@@ -1,7 +1,7 @@
 angular.module('coins', []).
     directive('display', function() {
         return {
-            scope: { coins: '@' },
+            scope: { display: '@' },
             restrict: 'A',
             link: function(scope, element, attrs) {
                 var drawCoin = function(context, center, radius) {
@@ -13,7 +13,7 @@ angular.module('coins', []).
                     context.strokeStyle = '#003300';
                     context.stroke();
                 };
-                attrs.$observe('coins', function(rawValue) {
+                attrs.$observe('display', function(rawValue) {
                     var value = JSON.parse(rawValue);
                     if (!value.coins) return;
 
