@@ -11,11 +11,10 @@ object H264Decoder {
 
   val sessions = mutable.HashMap[UUID, H264DecoderContext]()
 
+  // TODO: Fixme
   def decodeFrames(session: UUID, chunk: Array[Byte]): util.Collection[Array[Byte]] = {
     val buffer: util.List[Array[Byte]] = new util.ArrayList[Array[Byte]]()
-    synchronized {
-      sessions.getOrElseUpdate(session, new H264DecoderContext(session)).decode(chunk)(buffer.add)
-    }
+    sessions.getOrElseUpdate(session, new H264DecoderContext(session)).decode(chunk)(buffer.add)
     buffer
   }
 
