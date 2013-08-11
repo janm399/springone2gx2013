@@ -13,8 +13,9 @@ object H264Decoder {
 
   def decodeFrames(session: UUID, chunk: Array[Byte]): util.Collection[Array[Byte]] = {
     val buffer: util.List[Array[Byte]] = new util.ArrayList[Array[Byte]]()
-    sessions.getOrElseUpdate(session, new H264DecoderContext(session)).decode(chunk)(buffer.add)
-    println("Decoded " + buffer.size())
+    synchronized {
+      sessions.getOrElseUpdate(session, new H264DecoderContext(session)).decode(chunk)(buffer.add)
+    }
     buffer
   }
 

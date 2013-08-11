@@ -26,10 +26,10 @@
     <!-- RabbitMQ connection details -->
 
     <!-- note that default is the machine's hostname, which can cause problems, when we mean ``localhost`` -->
-    <rabbit:connection-factory id="connectionFactory" host="localhost"/>
-    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory"/>
-    <rabbit:admin connection-factory="connectionFactory"/>
-    <rabbit:queue name="sogx.recog.queue"/>
+    <rabbit:connection-factory id="connectionFactory" host="localhost" channel-cache-size="10" />
+    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory" />
+    <rabbit:admin connection-factory="connectionFactory" />
+    <rabbit:queue name="sogx.recog.queue" />
 
     <rabbit:direct-exchange name="sogx.exchange">
         <rabbit:bindings>

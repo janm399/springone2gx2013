@@ -9,7 +9,7 @@ import org.springframework.messaging.support.converter.MappingJackson2MessageCon
 import org.eigengo.sogx.core.{RecogServiceActivator, RecogService}
 import java.util.concurrent.Executor
 import org.springframework.integration.MessageChannel
-import org.springframework.integration.channel.DirectChannel
+import org.springframework.integration.channel.{ExecutorChannel, DirectChannel}
 
 trait CoreConfig {
   val messageConverter = new MappingJackson2MessageConverter()
@@ -22,7 +22,7 @@ trait CoreConfig {
   @Bean def recogServiceActivator(): RecogServiceActivator
 
   // the channel onto which the requests will go
-  @Bean def recogRequest(): MessageChannel = new DirectChannel()
+  @Bean def recogRequest(): MessageChannel = new ExecutorChannel(asyncExecutor())
 
   // the channel that connects to the WS clients
   @Bean def dispatchChannel(): SubscribableChannel = {
