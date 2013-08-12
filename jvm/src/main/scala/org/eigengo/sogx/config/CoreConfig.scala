@@ -22,7 +22,7 @@ trait CoreConfig {
   @Bean def recogServiceActivator(): RecogServiceActivator
 
   // the channel onto which the requests will go
-  @Bean def recogRequest(): MessageChannel = new ExecutorChannel(asyncExecutor())
+  @Bean def recogRequest(): MessageChannel = new DirectChannel() //new ExecutorChannel(asyncExecutor())
 
   // the channel that connects to the WS clients
   @Bean def dispatchChannel(): SubscribableChannel = {

@@ -9,7 +9,7 @@ version := "1.0"
 scalaVersion := "2.10.2"
 
 resolvers ++= Seq(
-    "Xugggler"          at "http://xuggle.googlecode.com/svn/trunk/repo/share/java/",
+  "Xugggler"          at "http://xuggle.googlecode.com/svn/trunk/repo/share/java/",
 	"Spring Releases"   at "http://repo.springsource.org/release",
 	"Spring Milestones" at "http://repo.springsource.org/milestone",
 	"Spring Snapshots"  at "http://repo.springsource.org/snapshot"
