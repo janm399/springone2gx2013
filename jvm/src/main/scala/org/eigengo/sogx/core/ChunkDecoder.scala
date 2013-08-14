@@ -5,7 +5,7 @@ import java.util.{Collections, UUID}
 import org.eigengo.sogx.ContentTypes._
 import java.util
 
-class ChunkDecoder {
+class ChunkDecoder(h264Decoder: H264Decoder) {
 
   def decodeFrame(@Header correlationId: UUID, @Header("content-type") contentType: String,
                   @Payload chunk: Array[Byte]): util.Collection[Array[Byte]] = contentType match {
@@ -15,6 +15,6 @@ class ChunkDecoder {
 
   private def decodeSingleImage(session: UUID, chunk: Array[Byte]): util.Collection[Array[Byte]] = Collections.singletonList(chunk)
 
-  private def decodeH264Frames(session: UUID, chunk: Array[Byte]): util.Collection[Array[Byte]] = H264Decoder.decodeFrames(session, chunk)
+  private def decodeH264Frames(session: UUID, chunk: Array[Byte]): util.Collection[Array[Byte]] = h264Decoder.decodeFrames(session, chunk)
 
 }

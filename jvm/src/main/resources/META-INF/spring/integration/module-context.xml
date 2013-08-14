@@ -9,10 +9,10 @@
 		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="h264Decoder" class="org.eigengo.sogx.core.H264Decoder"/>
+
     <int:chain input-channel="recogRequest">
-        <int:service-activator id="activator" method="decodeFrame">
-            <bean class="org.eigengo.sogx.core.ChunkDecoder"/>
-        </int:service-activator>
+        <int:service-activator id="activator" method="decodeFrame" ref="chunkDecoder"/>
         <int:splitter id="splitter" apply-sequence="false"/>
         <int-amqp:outbound-gateway exchange-name="sogx.exchange" routing-key="sogx.recog.key"
                                    reply-timeout="250"

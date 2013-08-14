@@ -7,8 +7,7 @@ import java.util.UUID
 import java.util
 import scala.collection._
 
-object H264Decoder {
-
+class H264Decoder {
   val sessions = mutable.HashMap[UUID, H264DecoderContext]()
 
   // TODO: Fixme
@@ -20,16 +19,24 @@ object H264Decoder {
 
 }
 
-/**
- * Decodes the incoming chunks of H.264 stream; applies the function ``f`` to all
- * completed frames in the stream.
- *
- * It is not to be shared by multiple threads.
- *
- * @param f the function to be applied to every decoded frame
- * @tparam U return type
- */
-class H264DecoderContext(val session: UUID) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+private[core] class H264DecoderContext(val session: UUID) {
   val container = IContainer.make()
   val tf: TemporaryFile = new TemporaryFile(session)
   var isOpen = false
