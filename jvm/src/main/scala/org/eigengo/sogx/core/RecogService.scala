@@ -9,7 +9,7 @@ import org.springframework.integration.support.MessageBuilder
 class RecogService(recogChannel: MessageChannel, messagingTemplate: MessageSendingOperations[String]) {
   val random = new Random()
 
-  private def sendWithContentType(contentType: String)(correlationId: CorrelationId, chunk: ChunkData): Unit = {
+  private def sendWithContentType(contentType: String)(correlationId: CorrelationId, chunk: Chunk): Unit = {
     val message = MessageBuilder.
       withPayload(chunk).
       setCorrelationId(correlationId).
@@ -19,10 +19,10 @@ class RecogService(recogChannel: MessageChannel, messagingTemplate: MessageSendi
     recogChannel.send(message)
   }
 
-  def image(correlationId: CorrelationId, chunk: ChunkData) = sendWithContentType(ContentTypes.`image/*`) _
+  def image(correlationId: CorrelationId, chunk: Chunk) = sendWithContentType(ContentTypes.`image/*`)(correlationId, chunk)
 
-  def h264Frame(correlationId: CorrelationId, frame: ChunkData) = sendWithContentType(ContentTypes.`video/h264`) _
+  def h264Frame(correlationId: CorrelationId, chunk: Chunk) = sendWithContentType(ContentTypes.`video/h264`)(correlationId, chunk)
 
-  def mjpegFrame(correlationId: CorrelationId, frame: ChunkData) = sendWithContentType(ContentTypes.`video/mjpeg`) _
+  def mjpegFrame(correlationId: CorrelationId, chunk: Chunk) = sendWithContentType(ContentTypes.`video/mjpeg`)(correlationId, chunk)
 
 }

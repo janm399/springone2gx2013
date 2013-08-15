@@ -11,17 +11,17 @@ import org.eigengo.sogx._
 class H264Decoder {
   val sessions = mutable.HashMap[UUID, H264DecoderContext]()
 
-  def decodeFrames(correlationId: CorrelationId, chunk: ChunkData): util.Collection[ImageData] = {
+  def decodeFrames(correlationId: CorrelationId, chunk: Chunk): util.Collection[ImageData] = {
     val buffer = new util.ArrayList[ChunkData]()
-    sessions.getOrElseUpdate(correlationId, new H264DecoderContext(correlationId)).decode(chunk)(buffer.add)
+    sessions.getOrElseUpdate(correlationId, new H264DecoderContext(correlationId)).decode(chunk.data)(buffer.add)
     buffer
   }
 
 }
 
-private[core] class H264DecoderContext(val session: UUID) {
+private[core] case class H264DecoderContext(correlationId: CorrelationId) {
   val container = IContainer.make()
-  val tf: TemporaryFile = new TemporaryFile(session)
+  val tf: TemporaryFile = new TemporaryFile(correlationId)
   var isOpen = false
   var videoStream: IStream     = _
   var videoCoder: IStreamCoder = _

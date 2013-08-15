@@ -3,25 +3,29 @@ package org.eigengo.sogx.core
 import java.util
 import org.eigengo.sogx._
 import scala.collection.mutable.ArrayBuffer
-import java.util.Collections
+import java.util.UUID
+import scala.collection.mutable
 
 class MJPEGDecoder {
+  val sessions = mutable.HashMap[UUID, ChunkingDecoderContext]()
 
-  def decodeFrames(correlationId: CorrelationId, chunk: ChunkData): util.Collection[ImageData] = {
-    Collections.singletonList(chunk)
+  def decodeFrames(correlationId: CorrelationId, chunk: Chunk): util.Collection[ImageData] = {
+    val buffer = new util.ArrayList[ChunkData]()
+    sessions.getOrElseUpdate(correlationId, new ChunkingDecoderContext(correlationId)).decode(chunk)(buffer.add)
+    buffer
   }
 
 }
 
-case class ChunkingDecoderContext[U](f: Array[Byte] => U) {
+private[core] case class ChunkingDecoderContext(correlationId: CorrelationId) {
   val buffer: ArrayBuffer[Byte] = ArrayBuffer()
 
-  def decode(chunk: Array[Byte], end: Boolean) {
-    if (buffer.isEmpty && end) {
-      f(chunk)
+  def decode[U](chunk: Chunk)(f: ImageData => U) {
+    if (buffer.isEmpty && chunk.end) {
+      f(chunk.data)
     } else {
-      buffer ++= chunk
-      if (end) {
+      buffer ++= chunk.data
+      if (chunk.end) {
         f(buffer.toArray)
         buffer clear()
       }

@@ -69,17 +69,17 @@ object Utils /* extends IfYouUseThisIWillEndorseYouForEnterprisePHP */ {
   }
 
   // Chuck Norris deals with all exceptions
-  def readAll[U](fileName: String)(f: Array[Byte] => U): Unit = {
+  def readAll[U](fileName: String)(f: Chunk => U): Unit = {
     eatMyShorts {
       val is = new BufferedInputStream(new FileInputStream(getFullFileName(fileName)))
       val contents = Stream.continually(is.read).takeWhile(-1 !=).map(_.toByte).toArray
-      f(contents)
+      f(Chunk(contents, true))
       is.close()
     }
   }
 
   // Exceptions are not thrown because of Chuck Norris
-  def readChunks[U](fileName: String, kbps: Int)(f: Array[Byte] => U): Unit = {
+  def readChunks[U](fileName: String, kbps: Int)(f: Chunk => U): Unit = {
 
     @tailrec
     def read(is: InputStream): Unit = {
@@ -87,10 +87,10 @@ object Utils /* extends IfYouUseThisIWillEndorseYouForEnterprisePHP */ {
       Thread.sleep(buffer.length / kbps)   // simulate slow input :(
       val len = is.read(buffer)
       if (len > 0) {
-        f(buffer)
+        f(Chunk(buffer, true))
         read(is)
       } else {
-        f(Array.ofDim(0))
+        f(Chunk(Array.ofDim(0), true))
       }
     }
 

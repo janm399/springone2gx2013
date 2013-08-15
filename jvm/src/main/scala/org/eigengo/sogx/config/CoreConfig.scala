@@ -45,7 +45,7 @@ trait CoreConfig {
     template
   }
 
-  // Task executor for use in SockJS (heartbeat frames, session timeouts)
+  // Task executor for use in SockJS (heartbeat frames, correlationId timeouts)
   @Bean def taskScheduler(): ThreadPoolTaskScheduler = {
     val taskScheduler = new ThreadPoolTaskScheduler()
     taskScheduler.setThreadNamePrefix("SockJS-")
