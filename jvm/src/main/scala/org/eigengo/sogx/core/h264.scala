@@ -6,35 +6,18 @@ import java.io.{FileOutputStream, File, ByteArrayOutputStream}
 import java.util.UUID
 import java.util
 import scala.collection._
+import org.eigengo.sogx._
 
 class H264Decoder {
   val sessions = mutable.HashMap[UUID, H264DecoderContext]()
 
-  // TODO: Fixme
-  def decodeFrames(session: UUID, chunk: Array[Byte]): util.Collection[Array[Byte]] = {
-    val buffer: util.List[Array[Byte]] = new util.ArrayList[Array[Byte]]()
-    sessions.getOrElseUpdate(session, new H264DecoderContext(session)).decode(chunk)(buffer.add)
+  def decodeFrames(correlationId: CorrelationId, chunk: ChunkData): util.Collection[ImageData] = {
+    val buffer = new util.ArrayList[ChunkData]()
+    sessions.getOrElseUpdate(correlationId, new H264DecoderContext(correlationId)).decode(chunk)(buffer.add)
     buffer
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 private[core] class H264DecoderContext(val session: UUID) {
   val container = IContainer.make()
@@ -59,7 +42,7 @@ private[core] class H264DecoderContext(val session: UUID) {
     isOpen
   }
 
-  def decode[U](chunk: Array[Byte])(f: Array[Byte] => U): Unit = {
+  def decode[U](chunk: ChunkData)(f: ImageData => U): Unit = {
     tf.write(chunk)
 
     if (!open()) return
@@ -95,9 +78,9 @@ private[core] class H264DecoderContext(val session: UUID) {
 /**
  * Ghetto!
  */
-private[core] class TemporaryFile(session: UUID) /* extends UtterlyMiserable */ {
+private[core] class TemporaryFile(correlationId: CorrelationId) /* extends UtterlyMiserable */ {
   //val file: File = File.createTempFile("video", "mp4")
-  val file: File = new File(s"/Users/janmachacek/$session.mp4")
+  val file: File = new File(s"/Users/janmachacek/$correlationId.mp4")
   file.deleteOnExit()
   var open: Boolean = true
   private val fos: FileOutputStream = new FileOutputStream(file, true)

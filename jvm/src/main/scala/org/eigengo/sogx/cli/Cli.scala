@@ -5,7 +5,7 @@ import java.util.concurrent.Executor
 import org.springframework.core.task.SyncTaskExecutor
 import org.springframework.context.annotation.{Bean, AnnotationConfigApplicationContext, ImportResource, Configuration}
 import java.util.UUID
-import org.eigengo.sogx.CoinResponse
+import org.eigengo.sogx._
 import org.eigengo.sogx.core.{RecogService, RecogServiceActivator}
 import org.springframework.integration.annotation.{Payload, Header}
 import scala.annotation.tailrec
@@ -20,7 +20,7 @@ object Cli extends App {
   class App extends CoreConfig {
     @Bean def asyncExecutor(): Executor = new SyncTaskExecutor
     @Bean def recogServiceActivator() = new RecogServiceActivator {
-      def onCoinResponse(@Header correlationId: UUID, @Payload coins: CoinResponse): Unit = println(">>> " + correlationId + ": " + coins)
+      def onCoinResponse(@Header correlationId: CorrelationId, @Payload coins: CoinResponse): Unit = println(">>> " + correlationId + ": " + coins)
     }
   }
 
