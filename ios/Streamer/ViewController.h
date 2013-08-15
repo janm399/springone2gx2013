@@ -10,4 +10,5 @@
 @property (nonatomic, retain) IBOutlet UIButton *startStopButton;
 @property (nonatomic, retain) IBOutlet UIButton *predefButton;
 @property (nonatomic, retain) IBOutlet UILabel *statusLabel;
+@property (nonatomic, retain) IBOutlet UITextField *serverAddress;
 @end

@@ -19,6 +19,7 @@
 		541E79C1174CD72F00AD248A /* BlockingQueueInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E79B4174CD72F00AD248A /* BlockingQueueInputStream.m */; };
 		541E79C2174CD72F00AD248A /* CVServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 541E79B6174CD72F00AD248A /* CVServer.mm */; };
 		541E79C5174CD76300AD248A /* DocumentPreflight.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E79C4174CD76300AD248A /* DocumentPreflight.m */; };
+		5420682317BD2DD4006621AC /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5420682017BD2DD4006621AC /* ViewController.xib */; };
 		542C48A1175D07F000C08E3D /* coins2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 542C48A0175D07F000C08E3D /* coins2.mp4 */; };
 		54AC06B6174EA54B0031E2F2 /* ImageEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AC06B5174EA54B0031E2F2 /* ImageEncoder.m */; };
 		54B38AA51752AE4D00A4D17F /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F8704A17462702006F6C0F /* CoreImage.framework */; };
@@ -39,7 +40,6 @@
 		54F8703A17462320006F6C0F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 54F8703917462320006F6C0F /* Default@2x.png */; };
 		54F8703C17462320006F6C0F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 54F8703B17462320006F6C0F /* Default-568h@2x.png */; };
 		54F8703F17462320006F6C0F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F8703E17462320006F6C0F /* ViewController.m */; };
-		54F8704217462320006F6C0F /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54F8704017462320006F6C0F /* ViewController.xib */; };
 		54F8704917462344006F6C0F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F8704817462344006F6C0F /* AVFoundation.framework */; };
 		54F8704D17462711006F6C0F /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F8704C17462711006F6C0F /* CoreVideo.framework */; };
 		54F8704F17462753006F6C0F /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F8704E17462752006F6C0F /* CoreMedia.framework */; };
@@ -72,6 +72,7 @@
 		541E79B6174CD72F00AD248A /* CVServer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CVServer.mm; sourceTree = "<group>"; };
 		541E79C3174CD76300AD248A /* DocumentPreflight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentPreflight.h; sourceTree = "<group>"; };
 		541E79C4174CD76300AD248A /* DocumentPreflight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentPreflight.m; sourceTree = "<group>"; };
+		5420682117BD2DD4006621AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		542C48A0175D07F000C08E3D /* coins2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = coins2.mp4; sourceTree = "<group>"; };
 		54AC06B4174EA54B0031E2F2 /* ImageEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageEncoder.h; sourceTree = "<group>"; };
 		54AC06B5174EA54B0031E2F2 /* ImageEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageEncoder.m; sourceTree = "<group>"; };
@@ -104,7 +105,6 @@
 		54F8703B17462320006F6C0F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		54F8703D17462320006F6C0F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		54F8703E17462320006F6C0F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		54F8704117462320006F6C0F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		54F8704817462344006F6C0F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		54F8704A17462702006F6C0F /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		54F8704C17462711006F6C0F /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -243,7 +243,7 @@
 				54F8703517462320006F6C0F /* AppDelegate.m */,
 				54F8703D17462320006F6C0F /* ViewController.h */,
 				54F8703E17462320006F6C0F /* ViewController.m */,
-				54F8704017462320006F6C0F /* ViewController.xib */,
+				5420682017BD2DD4006621AC /* ViewController.xib */,
 				54F8702C17462320006F6C0F /* Supporting Files */,
 			);
 			path = Streamer;
@@ -316,10 +316,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				54F8703017462320006F6C0F /* InfoPlist.strings in Resources */,
+				5420682317BD2DD4006621AC /* ViewController.xib in Resources */,
 				54F8703817462320006F6C0F /* Default.png in Resources */,
 				54F8703A17462320006F6C0F /* Default@2x.png in Resources */,
 				54F8703C17462320006F6C0F /* Default-568h@2x.png in Resources */,
-				54F8704217462320006F6C0F /* ViewController.xib in Resources */,
 				542C48A1175D07F000C08E3D /* coins2.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -360,20 +360,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		5420682017BD2DD4006621AC /* ViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5420682117BD2DD4006621AC /* en */,
+			);
+			name = ViewController.xib;
+			sourceTree = "<group>";
+		};
 		54F8702E17462320006F6C0F /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				54F8702F17462320006F6C0F /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		54F8704017462320006F6C0F /* ViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				54F8704117462320006F6C0F /* en */,
-			);
-			name = ViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
