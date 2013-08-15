@@ -10,6 +10,13 @@ import java.util.UUID
 import org.eigengo.sogx.cli.Utils
 import org.eigengo.sogx.Chunk
 
+/**
+ * cat coins.mp4 | curl --limit-rate 64k -T - -X POST http://localhost:8080/app/recog/h264/`uuidgen`
+ * cat coins.mp4 | curl --limit-rate 64k -v --header "Transfer-Encoding: chunked" -T - -X POST http://localhost:8080/app/recog/h264/`uuidgen`
+ *
+ *
+ * @param recogService
+ */
 @Controller
 class RecogController @Autowired()(recogService: RecogService) {
   val globalId = UUID.randomUUID()
@@ -21,8 +28,9 @@ class RecogController @Autowired()(recogService: RecogService) {
   }
 
   @RequestMapping(value = Array("/app/recog/h264/{correlationId}"), method = Array(RequestMethod.POST))
+  @ResponseBody
   def h264Chunk(@PathVariable correlationId: CorrelationId, @RequestBody body: Array[Byte]): Unit = {
-    recogService.h264Chunk(globalId, Chunk(body, true))
+    recogService.h264Chunk(correlationId, Chunk(body, true))
   }
 
   @RequestMapping(Array("/app/foo"))
