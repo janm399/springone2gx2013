@@ -12,7 +12,8 @@ resolvers ++= Seq(
   "Xugggler"          at "http://xuggle.googlecode.com/svn/trunk/repo/share/java/",
 	"Spring Releases"   at "http://repo.springsource.org/release",
 	"Spring Milestones" at "http://repo.springsource.org/milestone",
-	"Spring Snapshots"  at "http://repo.springsource.org/snapshot"
+	"Spring Snapshots"  at "http://repo.springsource.org/snapshot",
+  "Local Maven Repo"  at "file://" + Path.userHome.absolutePath + "/.m2/repository"
 )
 
 libraryDependencies ++= springframework.all ++ springintegration.all ++ jackson.all ++ reactor.all
