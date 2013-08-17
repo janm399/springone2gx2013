@@ -1,17 +1,16 @@
 #import "AppDelegate.h"
 
-@implementation AppDelegate
+@implementation AppDelegate {
+	WebSocket* socket;
+}
 
 - (void)wsSend {
 	NSLog(@"A");
-	WebSocketConnectConfig* config = [WebSocketConnectConfig configWithURLString:@"ws://192.168.0.5:8080/websocket" origin:nil protocols:nil tlsSettings:nil headers:nil verifySecurityKey:NO extensions:nil];
+	WebSocketConnectConfig* config = [WebSocketConnectConfig configWithURLString:@"ws://192.168.0.5:8080/websocket/app/recog/h264" origin:nil protocols:nil tlsSettings:nil headers:nil verifySecurityKey:NO extensions:nil];
 	config.closeTimeout = 15.0;
 	config.keepAlive = 15.0;
-	WebSocket *socket = [WebSocket webSocketWithConfig:config delegate:self];
+	socket = [WebSocket webSocketWithConfig:config delegate:self];
 	[socket open];
-//	[socket sendText:@"Hello"];
-//	[socket sendText:@"World"];
-	[socket close];
 	NSLog(@"B");
 }
 
@@ -61,6 +60,10 @@
  **/
 - (void) didOpen {
 	NSLog(@"didOpen");
+	[socket sendText:@"Hello"];
+	[socket sendText:@"World"];
+	[socket sendBinary:[@"Foo" dataUsingEncoding:NSASCIIStringEncoding]];
+	[socket close];
 }
 
 /**

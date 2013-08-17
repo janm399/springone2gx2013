@@ -12,8 +12,7 @@ import org.springframework.messaging.support.channel.ExecutorSubscribableChannel
 import org.springframework.web.socket.sockjs.transport.handler.DefaultSockJsService
 import org.springframework.web.socket.sockjs.SockJsHttpRequestHandler
 import org.springframework.messaging.handler.websocket.SubProtocolWebSocketHandler
-import org.springframework.web.socket.support.PerConnectionWebSocketHandler
-import org.springframework.web.socket.adapter.BinaryWebSocketHandlerAdapter
+import org.springframework.web.socket.support.AnnotationWebSocketHandlerAdapter
 import org.springframework.web.socket.server.support.WebSocketHttpRequestHandler
 
 trait WebConfig {
@@ -48,7 +47,8 @@ trait WebConfig {
 
   @Bean
   def websocketSocketHandler(): WebSocketHandler = {
-    new PerConnectionWebSocketHandler(classOf[BinaryWebSocketHandlerAdapter])
+    new AnnotationWebSocketHandlerAdapter()
+    // new PerConnectionWebSocketHandler(classOf[TextWebSocketHandlerAdapter])
   }
 
   // MessageHandler for processing messages by delegating to @Controller annotated methods
