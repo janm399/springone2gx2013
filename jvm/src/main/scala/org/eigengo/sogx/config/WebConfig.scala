@@ -31,7 +31,8 @@ trait WebConfig {
     hm
   }
 
-  @Bean def webSocketHandlerMapping(): SimpleUrlHandlerMapping = {
+  @Bean
+  def webSocketHandlerMapping(): SimpleUrlHandlerMapping = {
   	val requestHandler = new PerConnectionWebSocketHandler(classOf[BinaryWebSocketHandlerAdapter], true)
 
   	val hm = new SimpleUrlHandlerMapping()
@@ -57,7 +58,7 @@ trait WebConfig {
   // MessageHandler for processing messages by delegating to @Controller annotated methods
   @Bean
   def annotationMessageHandler(): AnnotationMethodMessageHandler = {
-    val handler = new AnnotationMethodMessageHandler(dispatchMessagingTemplate(), webSocketHandlerChannel());
+    val handler = new AnnotationMethodMessageHandler(dispatchMessagingTemplate(), webSocketHandlerChannel())
 
     handler.setDestinationPrefixes(util.Arrays.asList("/app/"))
     handler.setMessageConverter(messageConverter)

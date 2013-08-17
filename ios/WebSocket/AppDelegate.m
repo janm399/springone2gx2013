@@ -4,7 +4,7 @@
 
 - (void)wsSend {
 	NSLog(@"A");
-	WebSocketConnectConfig* config = [WebSocketConnectConfig configWithURLString:@"ws://192.168.0.100:8080/ws/info" origin:nil protocols:nil tlsSettings:nil headers:nil verifySecurityKey:YES extensions:nil];
+	WebSocketConnectConfig* config = [WebSocketConnectConfig configWithURLString:@"ws://192.168.0.5:8080/websocket" origin:nil protocols:nil tlsSettings:nil headers:nil verifySecurityKey:NO extensions:nil];
 	config.closeTimeout = 15.0;
 	config.keepAlive = 15.0;
 	WebSocket *socket = [WebSocket webSocketWithConfig:config delegate:self];
