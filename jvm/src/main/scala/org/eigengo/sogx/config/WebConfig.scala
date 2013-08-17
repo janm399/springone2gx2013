@@ -14,15 +14,17 @@ import org.springframework.web.socket.sockjs.SockJsHttpRequestHandler
 import org.springframework.messaging.handler.websocket.SubProtocolWebSocketHandler
 import org.springframework.web.socket.support.PerConnectionWebSocketHandler
 import org.springframework.web.socket.adapter.BinaryWebSocketHandlerAdapter
+import org.springframework.web.socket.server.support.WebSocketHttpRequestHandler
 
 trait WebConfig {
   this: CoreConfig =>
   val userQueueSuffixResolver = new SimpleUserQueueSuffixResolver()
 
+  // SockJS WS handler mapping
   @Bean
   def sockJsHandlerMapping(): SimpleUrlHandlerMapping = {
     val sockJsService = new DefaultSockJsService(taskScheduler())
-    val requestHandler = new SockJsHttpRequestHandler(sockJsService, webSocketHandler())
+    val requestHandler = new SockJsHttpRequestHandler(sockJsService, sockJsSocketHandler())
 
     val hm = new SimpleUrlHandlerMapping()
     hm.setOrder(-2)
@@ -31,20 +33,9 @@ trait WebConfig {
     hm
   }
 
-  @Bean
-  def webSocketHandlerMapping(): SimpleUrlHandlerMapping = {
-  	val requestHandler = new PerConnectionWebSocketHandler(classOf[BinaryWebSocketHandlerAdapter], true)
-
-  	val hm = new SimpleUrlHandlerMapping()
-  	hm.setOrder(-1)
-  	hm.setUrlMap(Collections.singletonMap("/websocket/**", requestHandler))
-
-  	hm
-  }
-
   // WebSocketHandler supporting STOMP messages
   @Bean
-  def webSocketHandler(): WebSocketHandler = {
+  def sockJsSocketHandler(): WebSocketHandler = {
     val stompHandler = new StompProtocolHandler()
     stompHandler.setUserQueueSuffixResolver(userQueueSuffixResolver)
 
@@ -55,15 +46,32 @@ trait WebConfig {
     webSocketHandler
   }
 
+  @Bean
+  def websocketSocketHandler(): WebSocketHandler = {
+    new PerConnectionWebSocketHandler(classOf[BinaryWebSocketHandlerAdapter])
+  }
+
   // MessageHandler for processing messages by delegating to @Controller annotated methods
   @Bean
-  def annotationMessageHandler(): AnnotationMethodMessageHandler = {
+  def sockJsAnnotationMessageHandler(): AnnotationMethodMessageHandler = {
     val handler = new AnnotationMethodMessageHandler(dispatchMessagingTemplate(), webSocketHandlerChannel())
 
     handler.setDestinationPrefixes(util.Arrays.asList("/app/"))
     handler.setMessageConverter(messageConverter)
     dispatchChannel().subscribe(handler)
     handler
+  }
+
+  // Raw WS handler mapping
+  @Bean
+  def webSocketHandlerMapping(): SimpleUrlHandlerMapping = {
+    val requestHandler = new WebSocketHttpRequestHandler(websocketSocketHandler())
+
+    val hm = new SimpleUrlHandlerMapping()
+    hm.setOrder(-1)
+    hm.setUrlMap(Collections.singletonMap("/websocket/**", requestHandler))
+
+    hm
   }
 
   // MessageHandler that acts as a "simple" message broker
