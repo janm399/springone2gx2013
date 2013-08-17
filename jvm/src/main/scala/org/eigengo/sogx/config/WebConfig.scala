@@ -12,21 +12,33 @@ import org.springframework.messaging.support.channel.ExecutorSubscribableChannel
 import org.springframework.web.socket.sockjs.transport.handler.DefaultSockJsService
 import org.springframework.web.socket.sockjs.SockJsHttpRequestHandler
 import org.springframework.messaging.handler.websocket.SubProtocolWebSocketHandler
+import org.springframework.web.socket.support.PerConnectionWebSocketHandler
+import org.springframework.web.socket.adapter.BinaryWebSocketHandlerAdapter
 
 trait WebConfig {
   this: CoreConfig =>
   val userQueueSuffixResolver = new SimpleUserQueueSuffixResolver()
 
   @Bean
-  def handlerMapping(): SimpleUrlHandlerMapping = {
+  def sockJsHandlerMapping(): SimpleUrlHandlerMapping = {
     val sockJsService = new DefaultSockJsService(taskScheduler())
     val requestHandler = new SockJsHttpRequestHandler(sockJsService, webSocketHandler())
 
     val hm = new SimpleUrlHandlerMapping()
-    hm.setOrder(-1)
-    hm.setUrlMap(Collections.singletonMap("/ws/**", requestHandler))
+    hm.setOrder(-2)
+    hm.setUrlMap(Collections.singletonMap("/sockjs/**", requestHandler))
 
     hm
+  }
+
+  @Bean def webSocketHandlerMapping(): SimpleUrlHandlerMapping = {
+  	val requestHandler = new PerConnectionWebSocketHandler(classOf[BinaryWebSocketHandlerAdapter], true)
+
+  	val hm = new SimpleUrlHandlerMapping()
+  	hm.setOrder(-1)
+  	hm.setUrlMap(Collections.singletonMap("/websocket/**", requestHandler))
+
+  	hm
   }
 
   // WebSocketHandler supporting STOMP messages

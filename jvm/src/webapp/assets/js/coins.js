@@ -1,7 +1,7 @@
 function CoinCtrl($scope) {
     $scope.coins = {};
 
-    var socket = new SockJS('/ws');
+    var socket = new SockJS('/sockjs');
     var stompClient = Stomp.over(socket);
     stompClient.connect('', '', function(frame) {
         console.log('Connected ' + frame);
