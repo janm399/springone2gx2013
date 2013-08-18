@@ -17,9 +17,9 @@ For your convenience, I have included ``native/build.sh``, which checks for the 
 In essence, it does the ``cmake`` dance: in some sub-directory of ``$DIRECTORY``, it runs ``cmake ..``, followed by ``cmake --build .`` and ``sudo make install``. Remember that the standard C++ library must match in all the C++ projects. I am using C++11, with ``set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")`` in the ``CMakeLists.txt`` files.
 
 ###OpenCV
-As of 18th August, to build OpenCV, clone the repository from [https://github.com/Itseez/opencv](https://github.com/Itseez/opencv), then apply the changes in [PR 1244](https://github.com/Itseez/opencv/pull/1244). 
+As of 18th August, to build OpenCV, clone the repository from [https://github.com/Itseez/opencv](https://github.com/Itseez/opencv), then follow the usual cmake build process.
 
-~~
+####Obsolete instructions
 As of 8th August, to build OpenCV, clone the repository from [https://github.com/Itseez/opencv](https://github.com/Itseez/opencv), then apply the changes in [PR 1244](https://github.com/Itseez/opencv/pull/1244). 
 
 You can do so by applying this patch:
@@ -66,4 +66,3 @@ index 29e440d..a6deac5 100644
 ```
 
 Then follow the usual cmake dance: create sub-directory, say ``build`` in the root of the project, change into it and run ``cmake ..; cmake --build .; sudo make install``. 
-~~
