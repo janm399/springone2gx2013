@@ -9,7 +9,6 @@ import java.util.UUID
 import org.eigengo.sogx.cli.Utils
 import org.eigengo.sogx.Chunk
 import org.springframework.messaging.handler.annotation.{MessageBody, MessageMapping}
-import java.util
 
 /**
  * cat coins.mp4 | curl --limit-rate 64k -T - -X POST http://localhost:8080/app/recog/h264/`uuidgen`

@@ -1,10 +1,9 @@
 #Building
-To build the application you will need the following "standard" components, that can be installed automatically on most systems. (Sorry, Windows!)
+To build the application you will need the following "standard" components, that can be installed automatically on most systems. Tested with [Homebrew](http://brew.sh/) on OS X; I assume that package managers on assorted Linuxen (thanks to [Verity Stob](http://www.theregister.co.uk/software/stob/) for the name!) will work in a very similar fashion. (Sorry, Windows!)
 
-* cmake    (OS X: ``brew install cmake``)
-* Boost    (OS X: ``brew install boost``)
-* RabbitMQ (OS X: ``brew install rabbitmq``)
- 
+* cmake
+* Boost
+* RabbitMQ
 
 With that out of the way, you will need to build (from sources) the following:
 
@@ -12,15 +11,15 @@ With that out of the way, you will need to build (from sources) the following:
 * RabbitMQ-C library (in ``native/rabbitmq-c``)
 * RabbitMQ-CPP library (in ``native/rabbitmq-cpp``)
 
-###rabbitmq-c
-To build, do the ``cmake`` dance: in some sub-directory of ``rabbitmq-c``, run ``cmake ..``, followed by ``cmake --build .`` and ``sudo make install``.
+###rabbitmq-c and rabbitmq-cpp 
+For your convenience, I have included ``native/build.sh``, which checks for the core requirements (cmake and Boost) and builds the RabbitMQ components. It will ask you for your password, because it does ``sudo make install`` to install the libraries to ``/usr/local/lib``.
 
-###rabbitmq-cpp
-To build, do the ``cmake`` dance: in some sub-directory of ``rabbitmq-cpp``, run ``cmake ..``, followed by ``cmake --build .`` and ``sudo make install``.
-
-Remember that the standard C++ library must match in all the C++ projects. I am using C++11, with ``set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")`` in the ``CMakeLists.txt`` files.
+In essence, it does the ``cmake`` dance: in some sub-directory of ``$DIRECTORY``, it runs ``cmake ..``, followed by ``cmake --build .`` and ``sudo make install``. Remember that the standard C++ library must match in all the C++ projects. I am using C++11, with ``set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")`` in the ``CMakeLists.txt`` files.
 
 ###OpenCV
+As of 18th August, to build OpenCV, clone the repository from [https://github.com/Itseez/opencv](https://github.com/Itseez/opencv), then apply the changes in [PR 1244](https://github.com/Itseez/opencv/pull/1244). 
+
+~~
 As of 8th August, to build OpenCV, clone the repository from [https://github.com/Itseez/opencv](https://github.com/Itseez/opencv), then apply the changes in [PR 1244](https://github.com/Itseez/opencv/pull/1244). 
 
 You can do so by applying this patch:
@@ -67,3 +66,4 @@ index 29e440d..a6deac5 100644
 ```
 
 Then follow the usual cmake dance: create sub-directory, say ``build`` in the root of the project, change into it and run ``cmake ..; cmake --build .; sudo make install``. 
+~~
