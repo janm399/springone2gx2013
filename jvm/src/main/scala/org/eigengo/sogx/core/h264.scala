@@ -48,6 +48,7 @@ private[core] case class H264DecoderContext(correlationId: CorrelationId) {
     if (!open()) return
 
     val packet = IPacket.make()
+    container.setReadRetryCount(0)
     while (container.readNextPacket(packet) >= 0) {
       val picture = IVideoPicture.make(videoCoder.getPixelType, videoCoder.getWidth, videoCoder.getHeight)
       packet.getSize
