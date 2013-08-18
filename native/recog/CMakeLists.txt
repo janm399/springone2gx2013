@@ -11,6 +11,7 @@ find_package(Rabbitmqc REQUIRED)
 find_package(SimpleAmqpClient REQUIRED)
 find_package(OpenCV 2.4.7 REQUIRED)
 
+set(OpenCV_LIBS "opencv_gpu;opencv_contrib;opencv_legacy;opencv_objdetect;opencv_features2d;opencv_ml;opencv_imgproc;opencv_highgui;opencv_core")
 include_directories(${recog_SOURCE_DIR}/src)
 include_directories(SYSTEM ${Rabbitmqc_INCLUDE_DIRS})
 include_directories(SYSTEM ${SimpleAmqpClient_INCLUDE_DIRS})
