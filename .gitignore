@@ -12,7 +12,6 @@ gen
 **/*.pbxuser
 **/*.perspective
 **/*.perspectivev3
-*.xcworkspace
 *.xcuserdatad
 **/target
 target
