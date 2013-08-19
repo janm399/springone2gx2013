@@ -9,7 +9,7 @@ import scala.collection._
 import org.eigengo.sogx._
 
 class H264Decoder {
-  val sessions = mutable.HashMap[UUID, H264DecoderContext]()
+  val sessions = mutable.HashMap[CorrelationId, H264DecoderContext]()
 
   def decodeFrames(correlationId: CorrelationId, chunk: Chunk): util.Collection[ImageData] = {
     val buffer = new util.ArrayList[ChunkData]()

@@ -35,9 +35,9 @@ object Cli extends App {
     Console.readLine() match {
       case QuitCommand                => return
 
-      case ImageCommand(id, fileName) => readAll(fileName)(recogService.imageChunk(UUID.fromString(id), _))
-      case H264Command(id, fileName)  => readChunks(fileName, 64)(recogService.h264Chunk(UUID.fromString(id), _))
-      case MJPEGCommand(id, fileName) => readChunks(fileName, 64)(recogService.mjpegChunk(UUID.fromString(id), _))
+      case ImageCommand(id, fileName) => readAll(fileName)(recogService.imageChunk(id, _))
+      case H264Command(id, fileName)  => readChunks(fileName, 64)(recogService.h264Chunk(id, _))
+      case MJPEGCommand(id, fileName) => readChunks(fileName, 64)(recogService.mjpegChunk(id, _))
 
       case _                          => println("wtf??")
     }

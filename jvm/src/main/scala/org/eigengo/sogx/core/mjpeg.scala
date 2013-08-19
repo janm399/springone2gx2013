@@ -7,7 +7,7 @@ import java.util.UUID
 import scala.collection.mutable
 
 class MJPEGDecoder {
-  val sessions = mutable.HashMap[UUID, ChunkingDecoderContext]()
+  val sessions = mutable.HashMap[CorrelationId, ChunkingDecoderContext]()
 
   def decodeFrames(correlationId: CorrelationId, chunk: Chunk): util.Collection[ImageData] = {
     val buffer = new util.ArrayList[ChunkData]()

@@ -19,7 +19,6 @@ import org.springframework.messaging.handler.annotation.{SessionId, MessageBody,
  */
 @Controller
 class RecogController @Autowired()(recogService: RecogService) {
-  val globalId = UUID.randomUUID()
 
   @RequestMapping(value = Array("/app/recog"), method = Array(RequestMethod.POST))
   @ResponseBody
@@ -34,9 +33,9 @@ class RecogController @Autowired()(recogService: RecogService) {
   }
 
   @MessageMapping(Array("/app/recog/h264"))
-  def h264Chunk(@SessionId sessionId: String, @MessageBody body: ChunkData): Unit = {
+  def h264Chunk(@SessionId sessionId: CorrelationId, @MessageBody body: ChunkData): Unit = {
     // TODO: replace globalId with @MessageHeader attribute
-    recogService.h264Chunk(globalId, Chunk(body, true))
+    recogService.h264Chunk(sessionId, Chunk(body, true))
   }
 
   @RequestMapping(value = Array("/app/recog/fullimage/{correlationId}"), method = Array(RequestMethod.POST))
@@ -48,14 +47,14 @@ class RecogController @Autowired()(recogService: RecogService) {
   @RequestMapping(Array("/app/foo"))
   @ResponseBody
   def foo(): String = {
-    Utils.readAll("/coins2.png")(recogService.imageChunk(UUID.randomUUID(), _))
+    Utils.readAll("/coins2.png")(recogService.imageChunk(UUID.randomUUID().toString, _))
     "Hello, world"
   }
 
   @RequestMapping(Array("/app/bar"))
   @ResponseBody
   def bar(@RequestParam(defaultValue = "64") bps: Int): String = {
-    val id = UUID.randomUUID()
+    val id = UUID.randomUUID().toString
     Utils.readChunks("/coins.mp4", bps)(recogService.h264Chunk(id, _))
     "Hello, world"
   }
