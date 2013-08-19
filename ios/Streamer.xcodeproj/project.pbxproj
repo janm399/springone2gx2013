@@ -73,8 +73,8 @@
 		541E79C3174CD76300AD248A /* DocumentPreflight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentPreflight.h; sourceTree = "<group>"; };
 		541E79C4174CD76300AD248A /* DocumentPreflight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentPreflight.m; sourceTree = "<group>"; };
 		5420682117BD2DD4006621AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
-		542412C617C24913001EBC1F /* WebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; name = WebSocket.h; path = ../../UnittWebSocketClient/WebSocket.h; sourceTree = "<group>"; };
-		542412C717C24CAF001EBC1F /* libUnittWebSocketClient.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libUnittWebSocketClient.a; path = "build/Debug-iphoneos/libUnittWebSocketClient.a"; sourceTree = "<group>"; };
+		542412C617C24913001EBC1F /* WebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebSocket.h; path = ../../UnittWebSocketClient/WebSocket.h; sourceTree = "<group>"; };
+		542412C717C24CAF001EBC1F /* libUnittWebSocketClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libUnittWebSocketClient.a; path = "build/Debug-iphoneos/libUnittWebSocketClient.a"; sourceTree = "<group>"; };
 		542412C917C24CC7001EBC1F /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		542412CB17C24CCE001EBC1F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		542C48A0175D07F000C08E3D /* coins2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = coins2.mp4; sourceTree = "<group>"; };
@@ -301,6 +301,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Eigengo;
+				TargetAttributes = {
+					54F8702117462320006F6C0F = {
+						DevelopmentTeam = K5TCBGB2PR;
+					};
+				};
 			};
 			buildConfigurationList = 54F8701D17462320006F6C0F /* Build configuration list for PBXProject "Streamer" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -399,6 +404,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -430,6 +436,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -446,6 +453,8 @@
 		54F8704617462320006F6C0F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Streamer/Streamer-Prefix.pch";
 				INFOPLIST_FILE = "Streamer/Streamer-Info.plist";
@@ -455,6 +464,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -462,6 +472,8 @@
 		54F8704717462320006F6C0F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Streamer/Streamer-Prefix.pch";
 				INFOPLIST_FILE = "Streamer/Streamer-Info.plist";
@@ -471,6 +483,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

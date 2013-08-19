@@ -37,6 +37,7 @@
 #if !(TARGET_IPHONE_SIMULATOR)
 	// Video capture session; without a device attached to it.
 	captureSession = [[AVCaptureSession alloc] init];
+	[captureSession setSessionPreset:AVCaptureSessionPreset640x480];
 	
 	// Preview layer that will show the video
 	previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:captureSession];
@@ -67,7 +68,7 @@
 	[captureSession startRunning];
 	
 	// begin a transaction
-	serverTransactionConnection = [[self serverConnection] begin:nil];
+	serverTransactionConnection = [[self serverConnection] begin];
 	
 	// (a) using static images
 	//serverConnectionInput = [serverTransactionConnection staticInput:self];
