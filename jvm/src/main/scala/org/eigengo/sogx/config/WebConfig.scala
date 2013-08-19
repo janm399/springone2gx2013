@@ -12,9 +12,9 @@ import org.springframework.messaging.support.channel.ExecutorSubscribableChannel
 import org.springframework.web.socket.sockjs.transport.handler.DefaultSockJsService
 import org.springframework.web.socket.sockjs.SockJsHttpRequestHandler
 import org.springframework.messaging.handler.websocket.SubProtocolWebSocketHandler
-import org.springframework.web.socket.support.AnnotationWebSocketHandlerAdapter
 import org.springframework.web.socket.server.support.WebSocketHttpRequestHandler
 import org.springframework.messaging.simp.raw.RawProtocolHandler
+import org.springframework.messaging.handler.annotation.support.SessionIdMehtodArgumentResolver
 
 trait WebConfig {
   this: CoreConfig =>
@@ -63,6 +63,7 @@ trait WebConfig {
   def sockJsAnnotationMessageHandler(): AnnotationMethodMessageHandler = {
     val handler = new AnnotationMethodMessageHandler(dispatchMessagingTemplate(), webSocketHandlerChannel())
 
+    handler.setCustomArgumentResolvers(util.Arrays.asList(new SessionIdMehtodArgumentResolver))
     handler.setDestinationPrefixes(util.Arrays.asList("/app/"))
     handler.setMessageConverter(messageConverter)
     dispatchChannel().subscribe(handler)

@@ -8,7 +8,7 @@ import org.eigengo.sogx._
 import java.util.UUID
 import org.eigengo.sogx.cli.Utils
 import org.eigengo.sogx.Chunk
-import org.springframework.messaging.handler.annotation.{MessageBody, MessageMapping}
+import org.springframework.messaging.handler.annotation.{SessionId, MessageBody, MessageMapping}
 
 /**
  * cat coins.mp4 | curl --limit-rate 64k -T - -X POST http://localhost:8080/app/recog/h264/`uuidgen`
@@ -34,7 +34,7 @@ class RecogController @Autowired()(recogService: RecogService) {
   }
 
   @MessageMapping(Array("/app/recog/h264"))
-  def h264Chunk(@MessageBody body: ChunkData): Unit = {
+  def h264Chunk(@SessionId sessionId: String, @MessageBody body: ChunkData): Unit = {
     // TODO: replace globalId with @MessageHeader attribute
     recogService.h264Chunk(globalId, Chunk(body, true))
   }

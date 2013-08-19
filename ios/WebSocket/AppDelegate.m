@@ -60,7 +60,7 @@
  **/
 - (void) didOpen {
 	NSLog(@"didOpen");
-	[socket sendBinary:[@"Foo" dataUsingEncoding:NSASCIIStringEncoding]];
+	[socket sendBinary:[@"Foobar" dataUsingEncoding:NSASCIIStringEncoding]];
 //	[socket sendText:@"World"];
 	[socket close];
 }
