@@ -16,10 +16,12 @@
 		541E79BE174CD72F00AD248A /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E79AE174CD72F00AD248A /* AFURLConnectionOperation.m */; };
 		541E79BF174CD72F00AD248A /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E79B0174CD72F00AD248A /* AFXMLRequestOperation.m */; };
 		541E79C0174CD72F00AD248A /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E79B2174CD72F00AD248A /* UIImageView+AFNetworking.m */; };
-		541E79C1174CD72F00AD248A /* BlockingQueueInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E79B4174CD72F00AD248A /* BlockingQueueInputStream.m */; };
 		541E79C2174CD72F00AD248A /* CVServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 541E79B6174CD72F00AD248A /* CVServer.mm */; };
 		541E79C5174CD76300AD248A /* DocumentPreflight.m in Sources */ = {isa = PBXBuildFile; fileRef = 541E79C4174CD76300AD248A /* DocumentPreflight.m */; };
 		5420682317BD2DD4006621AC /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5420682017BD2DD4006621AC /* ViewController.xib */; };
+		542412C817C24CAF001EBC1F /* libUnittWebSocketClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 542412C717C24CAF001EBC1F /* libUnittWebSocketClient.a */; };
+		542412CA17C24CC7001EBC1F /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 542412C917C24CC7001EBC1F /* CFNetwork.framework */; };
+		542412CC17C24CCE001EBC1F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 542412CB17C24CCE001EBC1F /* Security.framework */; };
 		542C48A1175D07F000C08E3D /* coins2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 542C48A0175D07F000C08E3D /* coins2.mp4 */; };
 		54AC06B6174EA54B0031E2F2 /* ImageEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AC06B5174EA54B0031E2F2 /* ImageEncoder.m */; };
 		54B38AA51752AE4D00A4D17F /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F8704A17462702006F6C0F /* CoreImage.framework */; };
@@ -66,13 +68,15 @@
 		541E79B0174CD72F00AD248A /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFXMLRequestOperation.m; sourceTree = "<group>"; };
 		541E79B1174CD72F00AD248A /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		541E79B2174CD72F00AD248A /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
-		541E79B3174CD72F00AD248A /* BlockingQueueInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockingQueueInputStream.h; sourceTree = "<group>"; };
-		541E79B4174CD72F00AD248A /* BlockingQueueInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockingQueueInputStream.m; sourceTree = "<group>"; };
 		541E79B5174CD72F00AD248A /* CVServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVServer.h; sourceTree = "<group>"; wrapsLines = 0; };
 		541E79B6174CD72F00AD248A /* CVServer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CVServer.mm; sourceTree = "<group>"; };
 		541E79C3174CD76300AD248A /* DocumentPreflight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentPreflight.h; sourceTree = "<group>"; };
 		541E79C4174CD76300AD248A /* DocumentPreflight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentPreflight.m; sourceTree = "<group>"; };
 		5420682117BD2DD4006621AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		542412C617C24913001EBC1F /* WebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; name = WebSocket.h; path = ../../UnittWebSocketClient/WebSocket.h; sourceTree = "<group>"; };
+		542412C717C24CAF001EBC1F /* libUnittWebSocketClient.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libUnittWebSocketClient.a; path = "build/Debug-iphoneos/libUnittWebSocketClient.a"; sourceTree = "<group>"; };
+		542412C917C24CC7001EBC1F /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		542412CB17C24CCE001EBC1F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		542C48A0175D07F000C08E3D /* coins2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = coins2.mp4; sourceTree = "<group>"; };
 		54AC06B4174EA54B0031E2F2 /* ImageEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageEncoder.h; sourceTree = "<group>"; };
 		54AC06B5174EA54B0031E2F2 /* ImageEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageEncoder.m; sourceTree = "<group>"; };
@@ -117,6 +121,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				542412CC17C24CCE001EBC1F /* Security.framework in Frameworks */,
+				542412CA17C24CC7001EBC1F /* CFNetwork.framework in Frameworks */,
+				542412C817C24CAF001EBC1F /* libUnittWebSocketClient.a in Frameworks */,
 				54B38AA51752AE4D00A4D17F /* CoreImage.framework in Frameworks */,
 				54F87051174627A8006F6C0F /* QuartzCore.framework in Frameworks */,
 				54F8704F17462753006F6C0F /* CoreMedia.framework in Frameworks */,
@@ -137,8 +144,7 @@
 				54B38AC01753CD1A00A4D17F /* RTSP */,
 				54B38AA61753772E00A4D17F /* H264 */,
 				541E799F174CD72F00AD248A /* AFNetworking */,
-				541E79B3174CD72F00AD248A /* BlockingQueueInputStream.h */,
-				541E79B4174CD72F00AD248A /* BlockingQueueInputStream.m */,
+				542412C617C24913001EBC1F /* WebSocket.h */,
 				541E79B5174CD72F00AD248A /* CVServer.h */,
 				541E79B6174CD72F00AD248A /* CVServer.mm */,
 				541E79C3174CD76300AD248A /* DocumentPreflight.h */,
@@ -227,6 +233,9 @@
 		54F8702417462320006F6C0F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				542412CB17C24CCE001EBC1F /* Security.framework */,
+				542412C917C24CC7001EBC1F /* CFNetwork.framework */,
+				542412C717C24CAF001EBC1F /* libUnittWebSocketClient.a */,
 				54F8704817462344006F6C0F /* AVFoundation.framework */,
 				54F8702517462320006F6C0F /* UIKit.framework */,
 				54F8702717462320006F6C0F /* Foundation.framework */,
@@ -343,7 +352,6 @@
 				541E79BE174CD72F00AD248A /* AFURLConnectionOperation.m in Sources */,
 				541E79BF174CD72F00AD248A /* AFXMLRequestOperation.m in Sources */,
 				541E79C0174CD72F00AD248A /* UIImageView+AFNetworking.m in Sources */,
-				541E79C1174CD72F00AD248A /* BlockingQueueInputStream.m in Sources */,
 				541E79C2174CD72F00AD248A /* CVServer.mm in Sources */,
 				541E79C5174CD76300AD248A /* DocumentPreflight.m in Sources */,
 				54AC06B6174EA54B0031E2F2 /* ImageEncoder.m in Sources */,
@@ -445,6 +453,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Streamer\"",
 				);
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -460,6 +469,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Streamer\"",
 				);
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

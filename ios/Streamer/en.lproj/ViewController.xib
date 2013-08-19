@@ -50,7 +50,7 @@
                         <action selector="predefStopStart:" destination="-1" eventType="touchUpInside" id="116"/>
                     </connections>
                 </button>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="192.168.0.100:8080" borderStyle="roundedRect" placeholder="Server address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rk3-nM-Kl8">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="192.168.0.101:8080" borderStyle="roundedRect" placeholder="Server address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rk3-nM-Kl8">
                     <rect key="frame" x="20" y="33" width="280" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>

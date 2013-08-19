@@ -8,26 +8,26 @@
  * Implement this delegate to receive notifications from the ``CVServerConnection``
  */
 @protocol CVServerConnectionDelegate
-  /**
-   * This is the 200 response from the server. The image or stream was accepted.
-   */
+/**
+ * This is the 200 response from the server. The image or stream was accepted.
+ */
 - (void)cvServerConnectionOk:(id)response;
 
-  /**
-   * This is the 202 response from the server. The image or stream was accepted, but more
-   * images or streams are expected before ``-cvServerConnectionOk`` may be called.
-   */
+/**
+ * This is the 202 response from the server. The image or stream was accepted, but more
+ * images or streams are expected before ``-cvServerConnectionOk`` may be called.
+ */
 - (void)cvServerConnectionAccepted:(id)response;
 
-  /**
-   * This is the 400 response from the server. The image or stream is not acceptable and
-   * sending the same image or stream will not succeed.
-   */
+/**
+ * This is the 400 response from the server. The image or stream is not acceptable and
+ * sending the same image or stream will not succeed.
+ */
 - (void)cvServerConnectionRejected:(id)response;
 
-  /**
-   * The server has failed: either HTTP 500 or no connection or such like.
-   */
+/**
+ * The server has failed: either HTTP 500 or no connection or such like.
+ */
 - (void)cvServerConnectionFailed:(NSError*)reason;
 @end
 
@@ -45,30 +45,30 @@ typedef struct {
  */
 @protocol CVServerConnectionInput
 
-  /**
-   * Submit a frame to the server endpoint, accepting any frame
-   */
+/**
+ * Submit a frame to the server endpoint, accepting any frame
+ */
 - (void)submitFrame:(CMSampleBufferRef)frame;
 
-  /**
-   * Submit a frame to the server endpoint, as long as ``preflight`` returns ``true``
-   */
+/**
+ * Submit a frame to the server endpoint, as long as ``preflight`` returns ``true``
+ */
 - (void)submitFrame:(CMSampleBufferRef)frame andPreflight:(bool (^)(CGImageRef))preflight;
 
-  /**
-   * Complete the stream of frames
-   */
+/**
+ * Complete the stream of frames
+ */
 - (void)stopRunning;
 
-  /**
-   * Returns the current 'stats' about the connection
-   */
+/**
+ * Returns the current 'stats' about the connection
+ */
 - (CVServerConnectionInputStats)getStats;
 
 #ifdef CV_RAW_SUPPORT
-  /**
-   * Submit raw data to the server endpoint
-   */
+/**
+ * Submit raw data to the server endpoint
+ */
 - (void)submitFrameRaw:(NSData*)rawFrame;
 #endif
 @end
@@ -78,25 +78,25 @@ typedef struct {
  */
 @interface CVServerTransactionConnection : NSObject
 
-  /**
-   * Obtains the ``CVServerConnectionInput`` that expects one frame at a time.
-   */
+/**
+ * Obtains the ``CVServerConnectionInput`` that expects one frame at a time.
+ */
 - (id<CVServerConnectionInput>)staticInput:(id<CVServerConnectionDelegate>)delegate;
 
-  /**
-   * Obtains the ``CVServerConnectionInput`` that expects stream of frames.
-   */
+/**
+ * Obtains the ``CVServerConnectionInput`` that expects stream of frames.
+ */
 - (id<CVServerConnectionInput>)h264Input:(id<CVServerConnectionDelegate>)delegate;
 
-  /**
-   * Obtains the ``CVServerConnectionInput`` that expects stream of frames.
-   */
+/**
+ * Obtains the ``CVServerConnectionInput`` that expects stream of frames.
+ */
 - (id<CVServerConnectionInput>)mjpegInput:(id<CVServerConnectionDelegate>)delegate;
 
 /**
-   * Obtains the ``CVServerConnectionInput`` that expects stream of frames and that
-   * hosts the stream as RTSP server on the device.
-   */
+ * Obtains the ``CVServerConnectionInput`` that expects stream of frames and that
+ * hosts the stream as RTSP server on the device.
+ */
 - (id<CVServerConnectionInput>)rtspServerInput:(id<CVServerConnectionDelegate>)delegate url:(out NSURL**)url;
 
 @end
@@ -175,15 +175,15 @@ typedef struct {
  */
 @interface CVServerConnection : NSObject
 
-  /**
-   * Creates the connection to the CV server at the given URL.
-   */
+/**
+ * Creates the connection to the CV server at the given URL.
+ */
 + (CVServerConnection*)connection:(NSURL*)baseUrl;
 
-  /**
-   * Begins a new transaction and returns a connection to that transaction
-   */
-- (CVServerTransactionConnection*)begin:(id)configuration;
+/**
+ * Begins a new transaction and returns a connection to that transaction
+ */
+- (CVServerTransactionConnection*)begin;
 
 @end
 

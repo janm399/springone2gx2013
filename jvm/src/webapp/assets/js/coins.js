@@ -12,8 +12,6 @@ function CoinCtrl($scope) {
             });
         });
 
-        var x = stompClient.send("/app/recog/h264", {"correlationId":"AA9229AF-792E-428D-B123-DAA2DC9EDC20"}, "blobule");
-        console.log(x);
 
     }, function(error) {
         console.log("STOMP protocol error " + error);

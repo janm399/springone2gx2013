@@ -29,6 +29,7 @@ private[core] case class H264DecoderContext(correlationId: CorrelationId) {
   def open(): Boolean = {
     if (!isOpen) {
       try {
+        container.setReadRetryCount(0)
         container.open(tf.file.getAbsolutePath, IContainer.Type.READ, null)
         videoStream = container.getStream(0)
         videoCoder = videoStream.getStreamCoder
@@ -42,13 +43,12 @@ private[core] case class H264DecoderContext(correlationId: CorrelationId) {
     isOpen
   }
 
-  def decode[U](chunk: ChunkData)(f: ImageData => U): Unit = {
+  def decode[U](chunk: ChunkData)(f: ImageData => U): Unit = synchronized {
     tf.write(chunk)
 
     if (!open()) return
 
     val packet = IPacket.make()
-    container.setReadRetryCount(0)
     while (container.readNextPacket(packet) >= 0) {
       val picture = IVideoPicture.make(videoCoder.getPixelType, videoCoder.getWidth, videoCoder.getHeight)
       packet.getSize

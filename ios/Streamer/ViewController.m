@@ -29,7 +29,7 @@
 #pragma mark - Video capture (using the back camera)
 
 - (CVServerConnection*)serverConnection {
-	NSURL *serverBaseUrl = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@/app/recog", self.serverAddress.text]];
+	NSURL *serverBaseUrl = [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/websocket/", self.serverAddress.text]];
 	return [CVServerConnection connection:serverBaseUrl];
 }
 
@@ -129,7 +129,7 @@
 - (IBAction)predefStopStart:(id)sender {
 	self.startStopButton.enabled = false;
 
-	serverTransactionConnection = [[self serverConnection] begin:nil];
+	serverTransactionConnection = [[self serverConnection] begin];
 	serverConnectionInput = [serverTransactionConnection h264Input:self];
 	
 	dispatch_queue_t queue = dispatch_queue_create("Predef", NULL);
@@ -139,7 +139,7 @@
 		while (true) {
 			NSData *data = [fileHandle readDataOfLength:16000];
 			[serverConnectionInput submitFrameRaw:data];
-			[NSThread sleepForTimeInterval:.25];		// 16000 * 4 Bps ~ 64 kB/s
+			[NSThread sleepForTimeInterval:1];
 			if (data.length == 0) break;
 		}
 		[serverConnectionInput submitFrameRaw:[[NSData alloc] init]];
