@@ -6,7 +6,7 @@
 
 - (void)wsSend {
 	NSLog(@"A");
-	WebSocketConnectConfig* config = [WebSocketConnectConfig configWithURLString:@"ws://192.168.0.5:8080/websocket/app/recog/h264" origin:nil protocols:nil tlsSettings:nil headers:nil verifySecurityKey:NO extensions:nil];
+	WebSocketConnectConfig* config = [WebSocketConnectConfig configWithURLString:@"ws://192.168.0.101:8080/websocket/app/recog/h264" origin:nil protocols:nil tlsSettings:nil headers:nil verifySecurityKey:NO extensions:nil];
 	config.closeTimeout = 15.0;
 	config.keepAlive = 15.0;
 	socket = [WebSocket webSocketWithConfig:config delegate:self];
@@ -60,9 +60,8 @@
  **/
 - (void) didOpen {
 	NSLog(@"didOpen");
-	[socket sendText:@"Hello"];
-	[socket sendText:@"World"];
 	[socket sendBinary:[@"Foo" dataUsingEncoding:NSASCIIStringEncoding]];
+//	[socket sendText:@"World"];
 	[socket close];
 }
 
