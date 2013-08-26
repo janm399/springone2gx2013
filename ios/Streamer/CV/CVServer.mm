@@ -126,11 +126,11 @@
 	config.closeTimeout = 15.0;
 	config.keepAlive = 15.0;
 	socket = [WebSocket webSocketWithConfig:config delegate:self];
+	socketSemaphore = dispatch_semaphore_create(0);
 	[socket open];
 	
 	[self initConnectionInput];
 	
-	socketSemaphore = dispatch_semaphore_create(0);
 	dispatch_semaphore_wait(socketSemaphore, DISPATCH_TIME_FOREVER);
 	
 	return self;

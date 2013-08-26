@@ -13,8 +13,8 @@ import org.springframework.web.socket.sockjs.transport.handler.DefaultSockJsServ
 import org.springframework.web.socket.sockjs.SockJsHttpRequestHandler
 import org.springframework.messaging.handler.websocket.SubProtocolWebSocketHandler
 import org.springframework.web.socket.server.support.WebSocketHttpRequestHandler
-import org.springframework.messaging.simp.raw.RawProtocolHandler
 import org.springframework.messaging.handler.annotation.support.SessionIdMehtodArgumentResolver
+import org.springframework.messaging.handler.MessagingWebSocketHandler
 
 trait WebConfig {
   this: CoreConfig =>
@@ -48,14 +48,7 @@ trait WebConfig {
 
   @Bean
   def websocketSocketHandler(): WebSocketHandler = {
-    val rawHandler = new RawProtocolHandler()
-    rawHandler.setUriPrefix("/websocket")
-
-    val webSocketHandler = new SubProtocolWebSocketHandler(dispatchChannel())
-    webSocketHandler.setDefaultProtocolHandler(rawHandler)
-    webSocketHandlerChannel().subscribe(webSocketHandler)
-
-    webSocketHandler
+    new MessagingWebSocketHandler(dispatchChannel())
   }
 
   // MessageHandler for processing messages by delegating to @Controller annotated methods

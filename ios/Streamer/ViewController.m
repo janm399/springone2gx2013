@@ -133,20 +133,18 @@
 	serverTransactionConnection = [[self serverConnection] begin];
 	serverConnectionInput = [serverTransactionConnection h264Input:self];
 	
-	dispatch_queue_t queue = dispatch_queue_create("Predef", NULL);
-	dispatch_sync(queue, ^{
-		NSString *filePath = [[NSBundle mainBundle] pathForResource:@"coins2" ofType:@"mp4"];
-		NSFileHandle* fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
-		while (true) {
-			NSData *data = [fileHandle readDataOfLength:16000];
-			[serverConnectionInput submitFrameRaw:data];
-			[NSThread sleepForTimeInterval:1];
-			if (data.length == 0) break;
-		}
-		[serverConnectionInput submitFrameRaw:[[NSData alloc] init]];
-		[serverConnectionInput stopRunning];
-		[fileHandle closeFile];
-	});
+	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"coins2" ofType:@"mp4"];
+	NSFileHandle* fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
+	while (true) {
+		NSData *data = [fileHandle readDataOfLength:16000];
+		[serverConnectionInput submitFrameRaw:data];
+		[NSThread sleepForTimeInterval:1];
+		if (data.length == 0) break;
+	}
+	[serverConnectionInput submitFrameRaw:[[NSData alloc] init]];
+	[serverConnectionInput stopRunning];
+	[fileHandle closeFile];
+
 	self.startStopButton.enabled = true;
 }
 
