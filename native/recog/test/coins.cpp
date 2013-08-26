@@ -1,7 +1,7 @@
 #include "rtest.h"
 #include "coins.h"
 
-using namespace eigengo::akka;
+using namespace eigengo::sogx;
 
 class CoinCounterTest : public OpenCVTest {
 protected:

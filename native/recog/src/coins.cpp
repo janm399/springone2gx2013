@@ -1,6 +1,6 @@
 #include "coins.h"
 
-using namespace eigengo::akka;
+using namespace eigengo::sogx;
 
 std::vector<Coin> CoinCounter::countCpu(const cv::Mat &image) {
 	using namespace cv;
@@ -14,12 +14,11 @@ std::vector<Coin> CoinCounter::countCpu(const cv::Mat &image) {
 	GaussianBlur(dst, dst, Size(9, 9), 3, 3);
 	threshold(dst, dst, 150, 255, THRESH_BINARY);
 	GaussianBlur(dst, dst, Size(3, 3), 3, 3);
-	//Canny(dst, dst, 1000, 1700, 5);
 	HoughCircles(dst, circles, HOUGH_GRADIENT,
 				 1,    // dp
 				 60,   // min dist
 				 200,  // canny1
-				 20,	   // canny2
+				 20,   // canny2
 				 30,   // min radius
 				 100   // max radius
 				 );

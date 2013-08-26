@@ -3,8 +3,9 @@
 
 #include <opencv2/opencv.hpp>
 #include <vector>
+#include <boost/optional.hpp>
 
-namespace eigengo { namespace akka {
+namespace eigengo { namespace sogx {
 
 	struct Point {
 		int x;

@@ -2,7 +2,7 @@
 #include "im.h"
 #include "jzon.h"
 
-using namespace eigengo::akka;
+using namespace eigengo::sogx;
 
 Main::Main(const std::string queue, const std::string exchange, const std::string routingKey) :
 RabbitRpcServer::RabbitRpcServer(queue, exchange, routingKey) {

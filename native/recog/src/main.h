@@ -5,7 +5,7 @@
 #include "rabbit.h"
 #include "coins.h"
 
-namespace eigengo { namespace akka {
+namespace eigengo { namespace sogx {
 	
 	class Main : public RabbitRpcServer {
 	private:

@@ -1,7 +1,7 @@
 #include "rabbit.h"
 #include <boost/thread.hpp>
 
-using namespace eigengo::akka;
+using namespace eigengo::sogx;
 using namespace AmqpClient;
 using namespace boost;
 

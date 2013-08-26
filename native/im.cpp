@@ -3,7 +3,7 @@
 
 #define SIMPLE_MESSAGE
 
-using namespace eigengo::akka;
+using namespace eigengo::sogx;
 
 ImageMessage::ImageMessage(AmqpClient::BasicMessage::ptr_t message) throw (ImageMessageException) {
 	amqp_bytes_t body = message->getAmqpBody();

@@ -9,7 +9,7 @@
 #include <amqp.h>
 #include <SimpleAmqpClient/SimpleAmqpClient.h>
 
-namespace eigengo { namespace akka {
+namespace eigengo { namespace sogx {
 
 	/**
 	 * Superclass for all RabbitMQ server components that attach to a queue, receive messages, perform some

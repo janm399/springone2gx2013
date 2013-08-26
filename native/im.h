@@ -6,7 +6,7 @@
 #include <boost/exception/all.hpp>
 #include <amqp.h>
 
-namespace eigengo { namespace akka {
+namespace eigengo { namespace sogx {
 
 	/**
 	* Image is actually a vector of its bytes
