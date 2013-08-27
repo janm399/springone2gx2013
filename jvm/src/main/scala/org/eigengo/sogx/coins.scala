@@ -4,7 +4,11 @@ import com.fasterxml.jackson.annotation.{JsonProperty, JsonCreator}
 import scala.beans.{BeanInfo, BeanProperty}
 
 case class CoinResponse @JsonCreator()(@JsonProperty(value = "coins", required = false) @BeanProperty coins: Array[Coin],
-                                       @JsonProperty(value = "succeeded") @BeanProperty succeeded: Boolean)
+                                       @JsonProperty(value = "succeeded") @BeanProperty succeeded: Boolean) {
+  override lazy val toString = {
+    if (coins != null) coins.foldLeft("")((acc, c) => acc + " " + c) else "[]"
+  }
+}
 case class Coin @JsonCreator() (@JsonProperty("center") @BeanProperty center: Point,
                                 @JsonProperty("radius") @BeanProperty radius: Int)
 case class Point @JsonCreator() (@JsonProperty("x") @BeanProperty x: Int,

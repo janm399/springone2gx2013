@@ -36,8 +36,8 @@ object Cli extends App {
       case QuitCommand                => return
 
       case ImageCommand(id, fileName) => readAll(fileName)(recogService.imageChunk(id, _))
-      case H264Command(id, fileName)  => readChunks(fileName, 64)(recogService.h264Chunk(id, _))
-      case MJPEGCommand(id, fileName) => readChunks(fileName, 64)(recogService.mjpegChunk(id, _))
+      case H264Command(id, fileName)  => readChunks(fileName, 5)(recogService.h264Chunk(id, _))
+      case MJPEGCommand(id, fileName) => readChunks(fileName, 5)(recogService.mjpegChunk(id, _))
 
       case _                          => println("wtf??")
     }
@@ -49,7 +49,7 @@ object Cli extends App {
 }
 
 object Commands {
-  private def uuidAnd(rest: String) = s"([0-9a-z\\-]{36})/$rest".r
+  private def uuidAnd(rest: String) = s"([0-9a-zA-Z\\-]{36})/$rest".r
 
   val ImageCommand    = uuidAnd("image:(.*)")
   val H264Command     = uuidAnd("h264:(.*)")
@@ -57,3 +57,10 @@ object Commands {
   val QuitCommand     = "quit"
 
 }
+
+
+/*
+
+C521DAB7-391F-4AE1-86D7-878EBD6322E3/mjpeg:/coins1.mjpeg
+
+*/

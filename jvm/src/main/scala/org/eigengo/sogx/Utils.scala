@@ -21,7 +21,12 @@ object Utils /* extends IfYouUseThisIWillEndorseYouForEnterprisePHP */ {
     private def readInt32(is: InputStream): Int = {
       val buffer: Array[Byte] = Array.ofDim(4)
       is.read(buffer, 0, 4)
-      buffer(0) >> 24 + buffer(1) >> 16 + buffer(2) >> 8 + buffer(3)
+      val b0: Int = (buffer(0) & 0x000000ff) << 24
+      val b1: Int = (buffer(1) & 0x000000ff) << 16
+      val b2: Int = (buffer(2) & 0x000000ff) << 8
+      val b3: Int = (buffer(3) & 0x000000ff)
+
+      b0 + b1 + b2 + b3
     }
 
     // Chuck Norris deals with all exceptions

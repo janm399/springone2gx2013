@@ -124,7 +124,6 @@
 															   verifySecurityKey:NO
 																	  extensions:nil];
 	config.closeTimeout = 15.0;
-	config.timeout = 10.0;
 	config.keepAlive = 15.0;
 	socket = [WebSocket webSocketWithConfig:config delegate:self];
 	socketSemaphore = dispatch_semaphore_create(0);
