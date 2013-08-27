@@ -36,8 +36,8 @@ object Cli extends App {
       case QuitCommand                => return
 
       case ImageCommand(id, fileName) => readAll(fileName)(recogService.imageChunk(id, _))
-      case H264Command(id, fileName)  => readChunks(fileName, 5)(recogService.h264Chunk(id, _))
-      case MJPEGCommand(id, fileName) => readChunks(fileName, 5)(recogService.mjpegChunk(id, _))
+      case H264Command(id, fileName)  => readChunks(fileName, 15)(recogService.h264Chunk(id, _))
+      case MJPEGCommand(id, fileName) => readChunks(fileName, 15)(recogService.mjpegChunk(id, _))
 
       case _                          => println("wtf??")
     }
