@@ -1,4 +1,5 @@
 #import "ViewController.h"
+#import "MJPEGReader.h"
 
 #define FRAMES_PER_SECOND_MOD 7
 
@@ -131,19 +132,12 @@
 	self.startStopButton.enabled = false;
 
 	serverTransactionConnection = [[self serverConnection] begin];
-	serverConnectionInput = [serverTransactionConnection h264Input:self];
+	serverConnectionInput = [serverTransactionConnection mjpegInput:self];
 	
-	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"coins2" ofType:@"mp4"];
-	NSFileHandle* fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
-	while (true) {
-		NSData *data = [fileHandle readDataOfLength:16000];
-		[serverConnectionInput submitFrameRaw:data];
-		[NSThread sleepForTimeInterval:1];
-		if (data.length == 0) break;
-	}
-	[serverConnectionInput submitFrameRaw:[[NSData alloc] init]];
+	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"coins2" ofType:@"mjpeg"];
+	MJPEGReader *reader = [[MJPEGReader alloc] initWithPath:filePath];
+	[reader readChunks:^(NSData* data) { [serverConnectionInput submitFrameRaw:data]; } fps:20];
 	[serverConnectionInput stopRunning];
-	[fileHandle closeFile];
 
 	self.startStopButton.enabled = true;
 }
