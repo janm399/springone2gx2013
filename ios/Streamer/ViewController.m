@@ -4,7 +4,6 @@
 #define FRAMES_PER_SECOND_MOD 7
 
 @implementation ViewController {
-//	CVServerConnection *serverConnection;
 	CVServerTransactionConnection *serverTransactionConnection;
 	id<CVServerConnectionInput> serverConnectionInput;
 	
