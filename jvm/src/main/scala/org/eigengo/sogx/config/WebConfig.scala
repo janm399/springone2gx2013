@@ -48,7 +48,9 @@ trait WebConfig {
 
   @Bean
   def websocketSocketHandler(): WebSocketHandler = {
-    new MessagingWebSocketHandler(dispatchChannel())
+    val handler = new MessagingWebSocketHandler(dispatchChannel())
+    handler.setUriPrefix("/websocket/")
+    handler
   }
 
   // MessageHandler for processing messages by delegating to @Controller annotated methods

@@ -13,7 +13,7 @@ import java.io.{InputStream, BufferedInputStream, FileInputStream}
 
 object Cli extends App {
   import Commands._
-  import Utils._
+  import Utils.reader._
 
   @Configuration
   @ImportResource(Array("classpath:/META-INF/spring/integration/module-context.xml"))
@@ -55,52 +55,5 @@ object Commands {
   val H264Command     = uuidAnd("h264:(.*)")
   val MJPEGCommand    = uuidAnd("mjpeg:(.*)")
   val QuitCommand     = "quit"
-
-}
-
-/**
- * Ghetto!
- */
-object Utils /* extends IfYouUseThisIWillEndorseYouForEnterprisePHP */ {
-  private def getFullFileName(fileName: String) = {
-    getClass.getResource(fileName).getPath
-  }
-
-  private def eatMyShorts[U](f: => U): Unit = {
-    try { f } catch { case x: Throwable => println(x.getMessage) }
-  }
-
-  // Chuck Norris deals with all exceptions
-  def readAll[U](fileName: String)(f: Chunk => U): Unit = {
-    eatMyShorts {
-      val is = new BufferedInputStream(new FileInputStream(getFullFileName(fileName)))
-      val contents = Stream.continually(is.read).takeWhile(-1 !=).map(_.toByte).toArray
-      f(Chunk(contents, true))
-      is.close()
-    }
-  }
-
-  // Exceptions are not thrown because of Chuck Norris
-  def readChunks[U](fileName: String, kbps: Int)(f: Chunk => U): Unit = {
-
-    @tailrec
-    def read(is: InputStream): Unit = {
-      val buffer = Array.ofDim[Byte](16000)
-      Thread.sleep(buffer.length / kbps)   // simulate slow input :(
-      val len = is.read(buffer)
-      if (len > 0) {
-        f(Chunk(buffer, true))
-        read(is)
-      } else {
-        f(Chunk(Array.ofDim(0), true))
-      }
-    }
-
-    eatMyShorts {
-      val is = new BufferedInputStream(new FileInputStream(getFullFileName(fileName)))
-      read(is)
-      is.close()
-    }
-  }
 
 }

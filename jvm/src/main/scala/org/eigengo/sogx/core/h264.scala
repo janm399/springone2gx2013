@@ -3,7 +3,6 @@ package org.eigengo.sogx.core
 import com.xuggle.xuggler._
 import javax.imageio.ImageIO
 import java.io.{FileOutputStream, File, ByteArrayOutputStream}
-import java.util.UUID
 import java.util
 import scala.collection._
 import org.eigengo.sogx._
@@ -58,7 +57,7 @@ private[core] case class H264DecoderContext(correlationId: CorrelationId) {
         if (bytesDecoded > 0) {
           offset = offset + bytesDecoded
           if (picture.isComplete) {
-            val javaImage = Utils.videoPictureToImage(picture)
+            val javaImage = com.xuggle.xuggler.Utils.videoPictureToImage(picture)
             val os = new ByteArrayOutputStream
             ImageIO.write(javaImage, "png", os)
             os.close()

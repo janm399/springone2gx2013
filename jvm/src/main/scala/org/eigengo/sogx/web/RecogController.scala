@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.eigengo.sogx.core.RecogService
 import org.eigengo.sogx._
 import java.util.UUID
-import org.eigengo.sogx.cli.Utils
 import org.eigengo.sogx.Chunk
 import org.springframework.messaging.handler.annotation.{SessionId, MessageBody, MessageMapping}
 
@@ -31,7 +30,7 @@ class RecogController @Autowired()(recogService: RecogService) {
   @RequestMapping(Array("/app/foo"))
   @ResponseBody
   def foo(): String = {
-    Utils.readAll("/coins2.png")(recogService.imageChunk(UUID.randomUUID().toString, _))
+    Utils.reader.readAll("/coins2.png")(recogService.imageChunk(UUID.randomUUID().toString, _))
     "Hello, world"
   }
 
@@ -39,7 +38,7 @@ class RecogController @Autowired()(recogService: RecogService) {
   @ResponseBody
   def bar(@RequestParam(defaultValue = "64") bps: Int): String = {
     val id = UUID.randomUUID().toString
-    Utils.readChunks("/coins.mp4", bps)(recogService.h264Chunk(id, _))
+    Utils.reader.readChunks("/coins.mjpeg", bps)(recogService.h264Chunk(id, _))
     "Hello, world"
   }
 

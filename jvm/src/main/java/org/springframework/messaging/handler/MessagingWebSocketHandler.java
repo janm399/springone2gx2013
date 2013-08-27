@@ -2,6 +2,8 @@ package org.springframework.messaging.handler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -15,12 +17,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MessagingWebSocketHandler implements WebSocketHandler {
+public class MessagingWebSocketHandler implements WebSocketHandler, InitializingBean {
     private final Log logger = LogFactory.getLog(MessagingWebSocketHandler.class);
 
-    private boolean ignoreLastNumberPathElement = true;
+    private boolean ignoreLastNumberPathElement = false;
 
-    private Pattern destinationPattern = Pattern.compile("/websocket/(.*)/-?\\d+");
+    private Pattern destinationPattern;
 
     private final MessageChannel outputChannel;
 
@@ -31,8 +33,15 @@ public class MessagingWebSocketHandler implements WebSocketHandler {
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterPropertiesSet() throws Exception {
+        if (destinationPattern == null) throw new BeanCreationException("Must set destinationPattern. Set destinationPattern or uriPrefix.");
+    }
 
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        if (logger.isTraceEnabled()) {
+            logger.trace("afterConnectionEstablished " + session);
+        }
     }
 
     @Override
@@ -114,7 +123,7 @@ public class MessagingWebSocketHandler implements WebSocketHandler {
      *
      * @param destinationPattern the destinationPattern to be used
      */
-    public void setDestinationPattern(Pattern destinationPattern) {
+    public final void setDestinationPattern(Pattern destinationPattern) {
         Assert.notNull(destinationPattern, "The 'destinationPattern' must not be null.");
 
         this.destinationPattern = destinationPattern;
@@ -126,7 +135,7 @@ public class MessagingWebSocketHandler implements WebSocketHandler {
      *
      * @param uriPrefix the URI prefix to drop
      */
-    public void setUriPrefix(String uriPrefix) {
+    public final void setUriPrefix(String uriPrefix) {
         String pattern;
         if (this.ignoreLastNumberPathElement) {
             pattern = String.format("%s(.*)/-?\\d+", uriPrefix);
