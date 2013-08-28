@@ -22,8 +22,34 @@ import org.eigengo.sogx.RecogSessionId
  * ``CoreConfig``. It would be wrong to say ``extends``, because ``WebConfig`` _is not_ some special
  * ``CoreConfig``: it merely requires it.
  *
- * It configures several URLs.
+ * It configures several URLs:
  *
+ * HTTP /app/       ~> the Spring MVC machinery
+ * HTTP /sockjs/    ~> the upgrade / change protocol endpoint
+ * HTTP /websocket/ ~> the upgrade / change protocol endpoint
+ * WS   /sockjs/    ~> the SockJS machinery, configured with the STOMP sub-protocol
+ * WS   /websocket/ ~> the raw WebSocket machinery
+ *
+ * The ``DispatcherServlet`` machinery is the usual stuff of Spring MVC; the interesting portion is the
+ * websocket stuff. I use the raw websocket support to receive fire-end-forget messages sent from the iOS
+ * application. The SockJS support, at the highest level, is similar. But the SockJS support brings complete
+ * full-duplex handler; handler that understands the structure of the received and sent messages.
+ *
+ * And so, in technical detail, we have:
+ *
+ * HTTP /app/       ~> DispatcherServletInitializer.getServletMappings
+ * HTTP /sockjs/    ~> sockJsHandlerMapping, routing the requests to SockJsHttpRequestHandler
+ * HTTP /websocket/ ~> webSocketHandlerMapping, routing the requests to WebSocketHttpRequestHandler
+ * WS   /sockjs/    ~> the SockJS machinery that understands the payloads of the WS messages; and delegates to the
+ *                     ``sockJsSocketHandler()``
+ * WS   /websocket/ ~> the raw WebSocket machinery that does not really understand the payloads of the WS messages;
+ *                     it only examines the URLs and delegates to ``websocketSocketHandler()``
+ *
+ * The messaging infrastructure is tied together by the underlying Spring Integration and Spring Messaging. The
+ * important components are ``dispatchChannel()``, which is used on the receiving end of websockets: when a message
+ * arrives, it goes on the ``dispatchChannel()`` channel. Both the SockJS and raw support then relies on the mapping
+ * provided by ``messageAnnotationMessageHandler()``, which "attaches" the received messages to method in the
+ * ``Controller``-annotated classes. (So, it works just like regular Spring MVC annotations. Slick!)
  *
  */
 trait WebConfig {
@@ -66,7 +92,7 @@ trait WebConfig {
   }
 
   // MessageHandler for processing messages by delegating to @Controller annotated methods
-  @Bean def sockJsAnnotationMessageHandler(): AnnotationMethodMessageHandler = {
+  @Bean def messageAnnotationMessageHandler(): AnnotationMethodMessageHandler = {
     val handler = new AnnotationMethodMessageHandler(dispatchMessagingTemplate(), webSocketHandlerChannel())
 
     handler.setCustomArgumentResolvers(util.Arrays.asList(new SessionIdMehtodArgumentResolver))
