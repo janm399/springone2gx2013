@@ -10,6 +10,9 @@ import java.util.concurrent.Executor
 import org.springframework.integration.channel.DirectChannel
 import org.springframework.scheduling.TaskScheduler
 
+/**
+ * Contains beans that make up the core of the application. It includes the
+ */
 trait CoreConfig {
   // the message converter for the payloads
   val messageConverter = new MappingJackson2MessageConverter()
@@ -21,6 +24,7 @@ trait CoreConfig {
   // video frames
   @Bean def recogServiceActivator(): RecogServiceActivator
 
+  // Decodes incoming MJPEG chunks into frames that can be sent to RMQ
   @Bean def mjpegDecoder() = new MJPEGDecoder()
 
   // Decodes incoming chunks into frames that can be sent to RMQ
@@ -51,6 +55,7 @@ trait CoreConfig {
   // services
   @Bean def recogService(): RecogService = new RecogService(recogRequest(), dispatchMessagingTemplate())
 
+  // maintains the recognition sessions
   @Bean def recogSessions() = new RecogSessions(dispatchMessagingTemplate())
 
 }

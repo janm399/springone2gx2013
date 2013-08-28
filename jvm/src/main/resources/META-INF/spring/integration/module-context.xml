@@ -11,29 +11,67 @@
 
     <!-- Recognition chain -->
     <int:chain input-channel="recogRequest">
+        <!-- first, call the decodeFrame method on the chunkDecoder bean, which turns one chunk into potentially many frames -->
         <int:service-activator id="activator" method="decodeFrame" ref="chunkDecoder"/>
+        <!-- take the returned collection of frames and split them into individual messages. 1 -> N mapping. -->
         <int:splitter id="splitter" apply-sequence="false"/>
+        <!-- take the frames (that represent individual frames and send them to the sogx.exchange with routing key sogx.recog.key
+             remember to map all headers to include the correlationId -->
         <int-amqp:outbound-gateway exchange-name="sogx.exchange" routing-key="sogx.recog.key"
                                    reply-timeout="250"
                                    mapped-reply-headers="*" mapped-request-headers="*"
                                    amqp-template="amqpTemplate"/>
+        <!-- take the payload and turn it to a String -->
         <int:transformer expression="new String(payload)"/>
+        <!--
+        Take the received response and turn it into an instance of our ObjCoinResponse. See the CoinResponse type: if it
+        is ``String``, you don't need this; if it is your own type, you may want to enable the
+        ``json-to-object-transformer`` to do the JSON dance.
+
         <int:json-to-object-transformer type="org.eigengo.sogx.CoinResponse" />
+        -->
         <int:service-activator ref="recogServiceActivator" method="onCoinResponse"/>
     </int:chain>
 
     <!-- RabbitMQ connection details -->
 
-    <!-- note that default is the machine's hostname, which can cause problems, when we mean ``localhost`` -->
+    <!--
+    Note that default is the machine's hostname, which can cause problems, when we mean ``localhost``
+    In the big nasty world, we will probably specify ``addresses`` as a list of RMQs rather than
+    relying on just a single connection. (Nota bene on ``localhost``!)
+    -->
     <rabbit:connection-factory id="connectionFactory" host="localhost" channel-cache-size="10" />
+    <!--
+    AMQP template is the usual template method pattern that performs the RabbitMQ shuffling. It is used in the
+    ``int-amqp:outbound-gateway`` to "talk" to the RabbitMQ.
+    -->
     <rabbit:template id="amqpTemplate" connection-factory="connectionFactory" />
-    <rabbit:admin connection-factory="connectionFactory" />
-    <rabbit:queue name="sogx.recog.queue" />
 
-    <rabbit:direct-exchange name="sogx.exchange">
+    <!--
+    For the lazy oiks like me, the application needs to have properly configured RabbitMQ with
+    exchange called ``sogx.exchange``, a queue called ``sogx.recog.queue``. Messages arriving to the
+    ``sogx.exchange`` with routing key ``sogx.recog.key`` should be routed to it.
+
+    If your RabbitMQ is configured perfectly, there is no need to have any of the following definitions,
+    but if you've just installed RabbitMQ and you just want to get running, you may want to keep these
+    elements here: Spring AMQP will create the exchange, queue and bindings automatically
+
+    Lazy oiks begin>>
+    -->
+
+    <!-- RabbitMQ admin that does the work for us by setting up the exchanges, queues, bindings, ... -->
+    <rabbit:admin id="rabbitAdmin" connection-factory="connectionFactory" auto-startup="true"/>
+
+    <!-- Define the queue called sogx.recog.queue -->
+    <rabbit:queue name="sogx.recog.queue" declared-by="rabbitAdmin"/>
+
+    <!-- Define the RMQ exchange and bind the sogx.recog.queue to sogx.recog.key -->
+    <rabbit:direct-exchange name="sogx.exchange" declared-by="rabbitAdmin">
         <rabbit:bindings>
-            <rabbit:binding queue="sogx.recog.queue" key="sogx.recog.key"/>
+            <rabbit:binding queue="sogx.recog.queue" key="sogx.recog.key" />
         </rabbit:bindings>
     </rabbit:direct-exchange>
+
+    <!-- <<Lazy oiks end -->
 
 </beans>

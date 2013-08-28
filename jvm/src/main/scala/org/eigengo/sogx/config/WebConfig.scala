@@ -17,7 +17,17 @@ import org.springframework.messaging.handler.annotation.support.SessionIdMehtodA
 import org.springframework.messaging.handler.MessagingWebSocketHandler
 import org.eigengo.sogx.RecogSessionId
 
+/**
+ * Contains the components that make up the web application. We require that it is mixed in with the
+ * ``CoreConfig``. It would be wrong to say ``extends``, because ``WebConfig`` _is not_ some special
+ * ``CoreConfig``: it merely requires it.
+ *
+ * It configures several URLs.
+ *
+ *
+ */
 trait WebConfig {
+  // require instances to be mixed in with CoreConfig
   this: CoreConfig =>
   val userQueueSuffixResolver = new SimpleUserQueueSuffixResolver()
 
