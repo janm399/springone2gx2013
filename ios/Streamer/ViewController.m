@@ -1,7 +1,7 @@
 #import "ViewController.h"
 #import "MJPEGReader.h"
 
-#define FRAMES_PER_SECOND_MOD 7
+#define FRAMES_PER_SECOND_MOD 2
 
 @implementation ViewController {
 	CVServerTransactionConnection *serverTransactionConnection;
@@ -102,10 +102,12 @@
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
 #if !(TARGET_IPHONE_SIMULATOR)
-	frameMod++;
-	if (frameMod % FRAMES_PER_SECOND_MOD == 0) {
-		[serverConnectionInput submitFrame:sampleBuffer];
-		NSLog(@"Network bytes %ld", [serverConnectionInput getStats].networkBytes);
+	@autoreleasepool {
+		frameMod++;
+		if (frameMod % FRAMES_PER_SECOND_MOD == 0) {
+			[serverConnectionInput submitFrame:sampleBuffer];
+			NSLog(@"Network bytes %ld", [serverConnectionInput getStats].networkBytes);
+		}
 	}
 #endif
 }
