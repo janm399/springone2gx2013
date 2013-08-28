@@ -11,14 +11,13 @@ canvas {
 
 
 /* Mordor */
-
 #mordor {
     background-image: url(/assets/img/mordor.jpg);
     width: 1280px;
     height: 1024px;
 }
 canvas.mordor {
-    border: 1px solid white;
+    border: none;
     width: 192px;
     height: 144px;
 }
@@ -36,11 +35,3 @@ div.coins {
 .glow {
     background-image: url(/assets/img/mordoreye-small.jpg);
 }
-
-/* I will probably remove these
-canvas.tv1 { background-image: url(/assets/img/tv1.png); }
-canvas.tv2 { background-image: url(/assets/img/tv2.png); }
-canvas.tv3 { background-image: url(/assets/img/tv3.png); }
-canvas.tv4 { background-image: url(/assets/img/tv4.png); }
-canvas.tv5 { background-image: url(/assets/img/tv5.png); }
-*/
