@@ -24,23 +24,23 @@ object Utils /* extends IfYouUseThisIWillEndorseYouForEnterprisePHP */ {
       val b0: Int = (buffer(0) & 0x000000ff) << 24
       val b1: Int = (buffer(1) & 0x000000ff) << 16
       val b2: Int = (buffer(2) & 0x000000ff) << 8
-      val b3: Int = (buffer(3) & 0x000000ff)
+      val b3: Int = buffer(3) & 0x000000ff
 
       b0 + b1 + b2 + b3
     }
 
     // Chuck Norris deals with all exceptions
-    def readAll[U](fileName: String)(f: Chunk => U): Unit = {
+    def readAll[U](fileName: String)(f: ChunkData => U): Unit = {
       eatMyShorts {
         val is = new BufferedInputStream(new FileInputStream(getFullFileName(fileName)))
         val contents = Stream.continually(is.read).takeWhile(-1 !=).map(_.toByte).toArray
-        f(Chunk(contents, true))
+        f(contents)
         is.close()
       }
     }
 
     // Exceptions are not thrown because of Chuck Norris
-    def readChunks[U](fileName: String, fps: Int)(f: Chunk => U): Unit = {
+    def readChunks[U](fileName: String, fps: Int)(f: ChunkData => U): Unit = {
 
       @tailrec
       def read(is: InputStream): Unit = {
@@ -49,10 +49,8 @@ object Utils /* extends IfYouUseThisIWillEndorseYouForEnterprisePHP */ {
         Thread.sleep(1000 / fps)   // simulate slow input :(
         val len = is.read(buffer)
         if (len > 0) {
-          f(Chunk(buffer, true))
+          f(buffer)
           read(is)
-        } else {
-          f(Chunk(Array.ofDim(0), true))
         }
       }
 
@@ -74,10 +72,10 @@ object Utils /* extends IfYouUseThisIWillEndorseYouForEnterprisePHP */ {
       os.write(Array(b0, b1, b2, b3))
     }
 
-    def write(fileName: String, chunk: Chunk): Unit = eatMyShorts {
+    def write(fileName: String, chunk: ChunkData): Unit = eatMyShorts {
       val fos = new FileOutputStream(fileName, true)
-      writeBEInt32(chunk.data.length, fos)
-      fos.write(chunk.data)
+      writeBEInt32(chunk.length, fos)
+      fos.write(chunk)
       fos.close()
     }
 

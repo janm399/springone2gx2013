@@ -16,6 +16,8 @@ import org.springframework.web.socket.server.support.WebSocketHttpRequestHandler
 import org.springframework.messaging.handler.annotation.support.SessionIdMehtodArgumentResolver
 import org.springframework.messaging.handler.MessagingWebSocketHandler
 import org.eigengo.sogx.RecogSessionId
+import org.springframework.scheduling.TaskScheduler
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 
 /**
  * Contains the components that make up the web application. We require that it is mixed in with the
@@ -56,6 +58,14 @@ trait WebConfig {
   // require instances to be mixed in with CoreConfig
   this: CoreConfig =>
   val userQueueSuffixResolver = new SimpleUserQueueSuffixResolver()
+
+  // Task executor for use in SockJS (heartbeat frames, correlationId timeouts)
+  @Bean def taskScheduler(): TaskScheduler = {
+    val taskScheduler = new ThreadPoolTaskScheduler()
+    taskScheduler.setThreadNamePrefix("SockJS-")
+    taskScheduler.setPoolSize(4)
+    taskScheduler
+  }
 
   // SockJS WS handler mapping
   @Bean def sockJsHandlerMapping(): SimpleUrlHandlerMapping = {

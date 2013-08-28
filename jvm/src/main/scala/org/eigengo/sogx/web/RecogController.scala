@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.eigengo.sogx.core.{RecogSessions, RecogService}
 import org.eigengo.sogx._
 import java.util.UUID
-import org.eigengo.sogx.Chunk
 import org.springframework.messaging.handler.annotation.{SessionId, MessageBody, MessageMapping}
 
 @Controller
@@ -14,12 +13,12 @@ class RecogController @Autowired()(recogService: RecogService, recogSessions: Re
 
   @MessageMapping(Array("/app/recog/image"))
   def image(@SessionId sessionId: CorrelationId, @MessageBody body: ChunkData): Unit = {
-    recogService.imageChunk(sessionId, Chunk(body, true))
+    recogService.imageChunk(sessionId, body)
   }
 
   @MessageMapping(Array("/app/recog/mjpeg"))
   def mjpeg(@SessionId sessionId: CorrelationId, @MessageBody body: ChunkData): Unit = {
-    recogService.mjpegChunk(sessionId, Chunk(body, true))
+    recogService.mjpegChunk(sessionId, body)
   }
 
   @RequestMapping(Array("/app/predef/image"))

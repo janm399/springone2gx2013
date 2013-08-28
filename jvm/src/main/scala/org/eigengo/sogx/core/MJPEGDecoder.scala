@@ -6,9 +6,9 @@ import java.util.Collections
 
 class MJPEGDecoder {
 
-  def decodeFrames(correlationId: CorrelationId, chunk: Chunk): util.Collection[ImageData] = {
+  def decodeFrames(correlationId: CorrelationId, chunk: ChunkData): util.Collection[ImageData] = {
     // Utils.writer.write(s"/Users/janmachacek/x$correlationId.mjpeg", chunk)
-    Collections.singletonList(chunk.data)
+    Collections.singletonList(chunk)
   }
 
 }
