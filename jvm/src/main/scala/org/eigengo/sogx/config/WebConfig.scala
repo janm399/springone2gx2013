@@ -82,8 +82,7 @@ trait WebConfig {
   @Bean
   @Profile(Array("simple-broker"))
   def simpleBrokerMessageHandler(): SimpleBrokerMessageHandler = {
-    val handler = new SimpleBrokerMessageHandler(webSocketHandlerChannel())
-    handler.setDestinationPrefixes(util.Arrays.asList("/topic/", "/queue/"))
+    val handler = new SimpleBrokerMessageHandler(webSocketHandlerChannel(), util.Arrays.asList("/topic/", "/queue/"))
     dispatchChannel().subscribe(handler)
     handler
   }
