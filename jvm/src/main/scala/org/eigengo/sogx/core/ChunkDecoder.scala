@@ -7,12 +7,22 @@ import org.eigengo.sogx._
 import java.util
 
 /**
- * Decodes the chunks
+ * Decodes the chunks that have arrived, depending on their content type. This is the first component in the chain. This
+ * component may return zero, one or many frames, depending on the state of the input.
  *
- * @param mjpegDecoder
+ * @param mjpegDecoder the MJPEG decoder to be used on the chunks
  */
 class ChunkDecoder(mjpegDecoder: MJPEGDecoder) {
 
+  /**
+   * Take the chunk arriving on a particular correlationId, examine its content type, and attempt to decode as many
+   * still frames as possible; now that we have all previous chunks and the new one just arriving.
+   *
+   * @param correlationId the correlation id
+   * @param contentType the content type
+   * @param chunk the new chunk
+   * @return collection of individual frames (represented as JPEG data)
+   */
   def decodeFrame(@Header correlationId: CorrelationId, @Header("content-type") contentType: String,
                   @Payload chunk: ChunkData): util.Collection[ImageData] = contentType match {
     case `video/mjpeg` => decodeMJPEGFrames(correlationId, chunk)

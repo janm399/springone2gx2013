@@ -12,13 +12,13 @@ import org.springframework.messaging.handler.annotation.{SessionId, MessageBody,
 class RecogController @Autowired()(recogService: RecogService, recogSessions: RecogSessions) {
 
   @MessageMapping(Array("/app/recog/image"))
-  def image(@SessionId sessionId: CorrelationId, @MessageBody body: ChunkData): Unit = {
-    recogService.imageChunk(sessionId, body)
+  def image(@SessionId sessionId: RecogSessionId, @MessageBody body: ChunkData): Unit = {
+    recogService.imageChunk(sessionId.value, body)
   }
 
   @MessageMapping(Array("/app/recog/mjpeg"))
-  def mjpeg(@SessionId sessionId: CorrelationId, @MessageBody body: ChunkData): Unit = {
-    recogService.mjpegChunk(sessionId, body)
+  def mjpeg(@SessionId sessionId: RecogSessionId, @MessageBody body: ChunkData): Unit = {
+    recogService.mjpegChunk(sessionId.value, body)
   }
 
   @RequestMapping(Array("/app/predef/image"))
