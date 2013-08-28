@@ -32,7 +32,6 @@ angular.module('coins', []).
 
                     // clear
                     context.clearRect(0, 0, canvas.width, canvas.height);
-                    console.log(JSON.stringify(offset));
 
                     // draw coins
                     for (var i = 0; i < value.coins.length; i++) {
@@ -42,7 +41,6 @@ angular.module('coins', []).
                         coin.center.x += offset.x;
                         coin.center.y += offset.y;
                         coin.radius *= scale;
-                        console.log(JSON.stringify(coin));
 
                         drawCoin(context, coin.center, coin.radius);
                     }
