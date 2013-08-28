@@ -1,7 +1,7 @@
 package org.eigengo.sogx.config
 
 import org.springframework.messaging.simp.handler.{UserDestinationMessageHandler, SimpleBrokerMessageHandler, AnnotationMethodMessageHandler, SimpleUserQueueSuffixResolver}
-import org.springframework.web.socket.WebSocketHandler
+import org.springframework.web.socket.{CloseStatus, WebSocketSession, WebSocketHandler}
 import org.springframework.context.annotation.{Profile, Bean}
 import org.springframework.messaging.simp.stomp.{StompProtocolHandler, StompBrokerRelayMessageHandler}
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping
@@ -15,6 +15,7 @@ import org.springframework.messaging.handler.websocket.SubProtocolWebSocketHandl
 import org.springframework.web.socket.server.support.WebSocketHttpRequestHandler
 import org.springframework.messaging.handler.annotation.support.SessionIdMehtodArgumentResolver
 import org.springframework.messaging.handler.MessagingWebSocketHandler
+import org.eigengo.sogx.RecogSessionId
 
 trait WebConfig {
   this: CoreConfig =>
@@ -45,7 +46,11 @@ trait WebConfig {
   }
 
   @Bean def websocketSocketHandler(): WebSocketHandler = {
-    val handler = new MessagingWebSocketHandler(dispatchChannel())
+    val handler = new MessagingWebSocketHandler(dispatchChannel()) {
+      override def afterConnectionClosed(session: WebSocketSession, closeStatus: CloseStatus) {
+        recogSessions().sessionEnded(RecogSessionId(session.getId))
+      }
+    }
     handler.setUriPrefix("/websocket/")
     handler
   }

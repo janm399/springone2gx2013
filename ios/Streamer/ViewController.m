@@ -1,7 +1,7 @@
 #import "ViewController.h"
 #import "MJPEGReader.h"
 
-#define FRAMES_PER_SECOND_MOD 2
+#define FRAMES_PER_SECOND_MOD 5
 
 @implementation ViewController {
 	CVServerTransactionConnection *serverTransactionConnection;

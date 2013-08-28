@@ -225,6 +225,7 @@
 @implementation AbstractStreamingCVServerConnectionInput
 
 - (void)stopRunning {
+	[socket close];
 }
 
 @end
