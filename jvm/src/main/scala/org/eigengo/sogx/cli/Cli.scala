@@ -36,7 +36,6 @@ object Cli extends App {
       case QuitCommand                => return
 
       case ImageCommand(id, fileName) => readAll(fileName)(recogService.imageChunk(id, _))
-      case H264Command(id, fileName)  => readChunks(fileName, 15)(recogService.h264Chunk(id, _))
       case MJPEGCommand(id, fileName) => readChunks(fileName, 15)(recogService.mjpegChunk(id, _))
 
       case _                          => println("wtf??")
@@ -52,7 +51,6 @@ object Commands {
   private def uuidAnd(rest: String) = s"([0-9a-zA-Z\\-]{36})/$rest".r
 
   val ImageCommand    = uuidAnd("image:(.*)")
-  val H264Command     = uuidAnd("h264:(.*)")
   val MJPEGCommand    = uuidAnd("mjpeg:(.*)")
   val QuitCommand     = "quit"
 

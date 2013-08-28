@@ -21,8 +21,7 @@ trait WebConfig {
   val userQueueSuffixResolver = new SimpleUserQueueSuffixResolver()
 
   // SockJS WS handler mapping
-  @Bean
-  def sockJsHandlerMapping(): SimpleUrlHandlerMapping = {
+  @Bean def sockJsHandlerMapping(): SimpleUrlHandlerMapping = {
     val sockJsService = new DefaultSockJsService(taskScheduler())
     val requestHandler = new SockJsHttpRequestHandler(sockJsService, sockJsSocketHandler())
 
@@ -34,8 +33,7 @@ trait WebConfig {
   }
 
   // WebSocketHandler supporting STOMP messages
-  @Bean
-  def sockJsSocketHandler(): WebSocketHandler = {
+  @Bean def sockJsSocketHandler(): WebSocketHandler = {
     val stompHandler = new StompProtocolHandler()
     stompHandler.setUserQueueSuffixResolver(userQueueSuffixResolver)
 
@@ -46,16 +44,14 @@ trait WebConfig {
     webSocketHandler
   }
 
-  @Bean
-  def websocketSocketHandler(): WebSocketHandler = {
+  @Bean def websocketSocketHandler(): WebSocketHandler = {
     val handler = new MessagingWebSocketHandler(dispatchChannel())
     handler.setUriPrefix("/websocket/")
     handler
   }
 
   // MessageHandler for processing messages by delegating to @Controller annotated methods
-  @Bean
-  def sockJsAnnotationMessageHandler(): AnnotationMethodMessageHandler = {
+  @Bean def sockJsAnnotationMessageHandler(): AnnotationMethodMessageHandler = {
     val handler = new AnnotationMethodMessageHandler(dispatchMessagingTemplate(), webSocketHandlerChannel())
 
     handler.setCustomArgumentResolvers(util.Arrays.asList(new SessionIdMehtodArgumentResolver))
@@ -66,8 +62,7 @@ trait WebConfig {
   }
 
   // Raw WS handler mapping
-  @Bean
-  def webSocketHandlerMapping(): SimpleUrlHandlerMapping = {
+  @Bean def webSocketHandlerMapping(): SimpleUrlHandlerMapping = {
     val requestHandler = new WebSocketHttpRequestHandler(websocketSocketHandler())
 
     val hm = new SimpleUrlHandlerMapping()
@@ -101,17 +96,13 @@ trait WebConfig {
 
   // MessageHandler that resolves destinations prefixed with "/user/{user}"
   // See the Javadoc of UserDestinationMessageHandler for details
-  @Bean
-  def userMessageHandler(): UserDestinationMessageHandler = {
+  @Bean def userMessageHandler(): UserDestinationMessageHandler = {
     val handler = new UserDestinationMessageHandler(dispatchMessagingTemplate(), userQueueSuffixResolver)
     dispatchChannel().subscribe(handler)
     handler
   }
 
   // Channel for sending STOMP messages to connected WebSocket sessions (mostly for internal use)
-  @Bean
-  def webSocketHandlerChannel(): SubscribableChannel = {
-    new ExecutorSubscribableChannel(asyncExecutor())
-  }
+  @Bean def webSocketHandlerChannel(): SubscribableChannel = new ExecutorSubscribableChannel(asyncExecutor())
 
 }

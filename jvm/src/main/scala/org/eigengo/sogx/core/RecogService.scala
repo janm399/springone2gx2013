@@ -21,8 +21,6 @@ class RecogService(recogChannel: MessageChannel, messagingTemplate: MessageSendi
 
   def imageChunk(correlationId: CorrelationId, chunk: Chunk) = sendWithContentType(ContentTypes.`image/*`, correlationId, chunk)
 
-  def h264Chunk(correlationId: CorrelationId, chunk: Chunk) = sendWithContentType(ContentTypes.`video/h264`, correlationId, chunk)
-
   def mjpegChunk(correlationId: CorrelationId, chunk: Chunk) = sendWithContentType(ContentTypes.`video/mjpeg`, correlationId, chunk)
 
 }
