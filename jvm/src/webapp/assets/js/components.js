@@ -3,7 +3,7 @@ angular.module('coins', []).
         return {
             scope: { display: '@' },
             restrict: 'A',
-            link: function(scope, element, attrs) {
+            link: function($scope, element, attrs) {
                 var scale = 1.0;
                 var offset = {x: 0, y: 0};
                 var coinColor = 'green';
