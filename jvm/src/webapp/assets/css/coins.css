@@ -1,3 +1,20 @@
 body {
     padding: 10px;
 }
+
+canvas {
+    border: 1px black solid;
+    float: left;
+    margin-right: 3pt;
+    margin-bottom: 3pt;
+}
+
+canvas.tv1 { background-image: url(/assets/img/tv1.png); }
+canvas.tv2 { background-image: url(/assets/img/tv2.png); }
+canvas.tv3 { background-image: url(/assets/img/tv3.png); }
+canvas.tv4 { background-image: url(/assets/img/tv4.png); }
+canvas.tv5 { background-image: url(/assets/img/tv5.png); }
+
+canvas.mordor {
+
+}

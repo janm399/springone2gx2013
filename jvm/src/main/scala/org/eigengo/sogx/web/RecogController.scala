@@ -33,9 +33,9 @@ class RecogController @Autowired()(recogService: RecogService, recogSessions: Re
 
   @RequestMapping(Array("/app/predef/coins"))
   @ResponseBody
-  def bar(@RequestParam(defaultValue = "64") bps: Int): String = {
+  def bar(@RequestParam(defaultValue = "10") fps: Int): String = {
     val id = UUID.randomUUID().toString
-    Utils.reader.readChunks("/coins2.mjpeg", bps)(recogService.mjpegChunk(id, _))
+    Utils.reader.readChunks("/coins2.mjpeg", fps)(recogService.mjpegChunk(id, _))
     recogSessions.sessionEnded(RecogSessionId(id))
     "coins"
   }

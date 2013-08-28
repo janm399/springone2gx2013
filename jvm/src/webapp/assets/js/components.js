@@ -4,15 +4,25 @@ angular.module('coins', []).
             scope: { display: '@' },
             restrict: 'A',
             link: function(scope, element, attrs) {
+                var scale = 1.0;
+                var offset = {x: 0, y: 0};
+                var coinColor = 'green';
+
+                if (attrs.fill) coinColor = attrs.fill;
+                if (attrs.scale) scale = attrs.scale;
+                if (attrs.dx) offset.x = parseInt(attrs.dx);
+                if (attrs.dy) offset.y = parseInt(attrs.dy);
+
                 var drawCoin = function(context, center, radius) {
                     context.beginPath();
                     context.arc(center.x, center.y, radius, 0, 2 * Math.PI, false);
-                    context.fillStyle = 'green';
+                    context.fillStyle = coinColor;
                     context.fill();
                     context.lineWidth = 2;
                     context.strokeStyle = '#003300';
                     context.stroke();
                 };
+
                 attrs.$observe('display', function(rawValue) {
                     var value = JSON.parse(rawValue);
                     if (!value.coins) return;
@@ -22,10 +32,18 @@ angular.module('coins', []).
 
                     // clear
                     context.clearRect(0, 0, canvas.width, canvas.height);
+                    console.log(JSON.stringify(offset));
 
                     // draw coins
                     for (var i = 0; i < value.coins.length; i++) {
                         var coin = value.coins[i];
+                        coin.center.x *= scale;
+                        coin.center.y *= scale;
+                        coin.center.x += offset.x;
+                        coin.center.y += offset.y;
+                        coin.radius *= scale;
+                        console.log(JSON.stringify(coin));
+
                         drawCoin(context, coin.center, coin.radius);
                     }
 
