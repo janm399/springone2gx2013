@@ -21,7 +21,7 @@ class RawJsonMessageConverter extends MessageConverter[Object] {
       b.append("]")
       MessageBuilder.withPayload(b.toString().getBytes.asInstanceOf[P]).build()
 
-    case x                      => toMessage(x.toString)
+    case x                     => toMessage(x.toString)
   }
 
   def fromMessage(message: Message[_], targetClass: Type): Object = message.getPayload.asInstanceOf[Object]
