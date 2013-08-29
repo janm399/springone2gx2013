@@ -21,7 +21,8 @@ import org.springframework.integration.channel.DirectChannel
  */
 trait CoreConfig {
   // the message converter for the payloads
-  val messageConverter = new MappingJackson2MessageConverter()
+  // val messageConverter = new MappingJackson2MessageConverter()
+  val messageConverter = new RawJsonMessageConverter()
 
   // -- The boring components
 

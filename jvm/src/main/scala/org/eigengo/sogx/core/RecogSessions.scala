@@ -26,14 +26,6 @@ class RecogSessions(messageSender: SimpMessageSendingOperations) {
     sendSessions()
   }
 
-  private def sendSessions(): Unit = {
-    import JavaConversions._
-    val b = new StringBuilder
-    b.append("[")
-    sessions.values().foreach(s => if (b.length == 1) b.append(s) else {b.append(","); b.append(s)})
-    b.append("]")
-    messageSender.send(s"/topic/recog/sessions", MessageBuilder.withPayload(b.toString().getBytes).build())
-    // messageSender.convertAndSend(s"/topic/recog/sessions", sessions.values())
-  }
+  private def sendSessions(): Unit = messageSender.convertAndSend(s"/topic/recog/sessions", sessions.values())
 
 }
