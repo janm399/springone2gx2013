@@ -31,8 +31,8 @@ namespace eigengo { namespace sogx {
 	 * So, a message with one image containing just the byte 0x0a will be ``0xface0007 0x00000001 0x00000001 0a``.
 	 * More realistic messages will contain images that are bigger, or will contain multiple messages. Consider these
 	 * 
-	 * - ``0xface0007 0x00000002 0x00000001 0x00000001 0x0a 0x0b`` is a message with two 1-byte images, 0x0a and 0x0b
-	 * - ``0xface0007 0x00000003 0x00000001 0x00000002 0x00000003 0x0a 0xb1 0xb2 0xc1 0xc2 0xc3`` is a message with three images.
+	 * - ``0xface0fb0 0x00000002 0x00000001 0x00000001 0x0a 0x0b`` is a message with two 1-byte images, 0x0a and 0x0b
+	 * - ``0xface0fb0 0x00000003 0x00000001 0x00000002 0x00000003 0x0a 0xb1 0xb2 0xc1 0xc2 0xc3`` is a message with three images.
 	 *
 	 * Realistically, the image sizes will be significantly bigger than several bytes; the sum of all images cannot exceed
 	 * 32bit integers.

@@ -46,7 +46,7 @@ ImageMessage& ImageMessage::replaceImage(int index, Image newImage) {
 }
 
 void ImageMessage::writeAmqpBytes(std::vector<unsigned char>& body) throw () {
-	writeBEInt32(0xface0007, body);
+	writeBEInt32(0xface0fb0, body);
 	writeBEInt32(m_images.size(), body);
 	for (auto i = m_images.begin(); i != m_images.end(); ++i) {
 		writeBEInt32((*i).size(), body);

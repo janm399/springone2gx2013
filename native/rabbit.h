@@ -51,7 +51,7 @@ namespace eigengo { namespace sogx {
 		/**
 		 * Perform some initialization in a thread
 		 */
-		virtual void inThreadInit() = 0;
+		virtual void inThreadInit();
 	};
 	
 } }

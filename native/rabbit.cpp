@@ -47,3 +47,7 @@ void RabbitRpcServer::runAndJoin(const int threadCount) {
 	
 	group.join_all();
 }
+
+void RabbitRpcServer::inThreadInit() {
+	
+}

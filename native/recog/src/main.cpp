@@ -12,15 +12,14 @@ RabbitRpcServer::RabbitRpcServer(queue, exchange, routingKey) {
 std::string Main::handleMessage(const AmqpClient::BasicMessage::ptr_t message, const AmqpClient::Channel::ptr_t channel) {
 	Jzon::Object responseJson;
 	try {
+		// get the message, read the image
 		ImageMessage imageMessage(message);
-		
-		Jzon::Array coinsJson;
-		//Jzon::Array facesJson;
 		auto imageData = imageMessage.headImage();
 		auto imageMat = cv::imdecode(cv::Mat(imageData), 1);
+
 		// ponies & unicorns
+		Jzon::Array coinsJson;
 		auto coins = coinCounter.count(imageMat);
-		
 		for (auto i = coins.begin(); i != coins.end(); ++i) {
 			Jzon::Object coinJson;
 			Jzon::Object centerJson;
@@ -30,7 +29,9 @@ std::string Main::handleMessage(const AmqpClient::BasicMessage::ptr_t message, c
 			coinJson.Add("radius", i->radius);
 			coinsJson.Add(coinJson);
 		}
-		//responseJson.Add("faces", facesJson);
+#ifdef WITH_RINGS
+		responseJson.Add("hasRing", ringDetector.detect(imageMat));
+#endif		
 		responseJson.Add("coins", coinsJson);
 		responseJson.Add("succeeded", true);
 	} catch (std::exception &e) {
@@ -38,7 +39,7 @@ std::string Main::handleMessage(const AmqpClient::BasicMessage::ptr_t message, c
 		std::cerr << e.what() << std::endl;
 		responseJson.Add("succeeded", false);
 	} catch (...) {
-		// bantha poodoo!
+		// more bantha fodder!
 		responseJson.Add("succeeded", false);
 	}
 
@@ -49,16 +50,6 @@ std::string Main::handleMessage(const AmqpClient::BasicMessage::ptr_t message, c
 	writer.Write();
 
 	return writer.GetResult();
-}
-
-void Main::inThreadInit() {
-#ifdef GPU
-	using namespace cv::gpu;
-	int deviceCount = getCudaEnabledDeviceCount();
-	if (deviceCount > 0) {
-		setDevice(0);
-	}
-#endif
 }
 
 int main(int argc, char** argv) {

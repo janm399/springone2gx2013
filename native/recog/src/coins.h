@@ -24,7 +24,7 @@ namespace eigengo { namespace sogx {
 	public:
 		std::vector<Coin> count(const cv::Mat &image);
 	};
-		
+			
 }
 }
 

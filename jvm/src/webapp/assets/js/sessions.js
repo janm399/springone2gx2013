@@ -10,7 +10,7 @@ function SessionsCtrl($scope) {
             // receive notifications on the recog/sessions topic
             stompClient.subscribe("/topic/recog/sessions", function(message) {
                 $scope.$apply(function() {
-                    $scope.sessions = JSON.parse(message.body);
+                    $scope.sessions = angular.fromJson(message.body);
                 });
             });
         },
