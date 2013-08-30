@@ -22,7 +22,6 @@ class Webapp extends WebMvcConfigurerAdapter with WebConfig with CoreConfig {
 
   @Bean def recogServiceActivator() = new RecogServiceActivator {
     def onCoinResponse(@Header correlationId: CorrelationId, @Payload coins: CoinResponse): Unit =
-      //dispatchMessagingTemplate().convertAndSend(s"/topic/recog/coin.$correlationId", coins)
       recogSessions().onCoinResponse(correlationId, coins)
   }
 

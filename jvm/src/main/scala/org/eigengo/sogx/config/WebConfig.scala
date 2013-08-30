@@ -1,9 +1,9 @@
 package org.eigengo.sogx.config
 
-import org.springframework.messaging.simp.handler.{SimpleBrokerMessageHandler, AnnotationMethodMessageHandler, SimpleUserQueueSuffixResolver}
-import org.springframework.web.socket.{CloseStatus, WebSocketSession, WebSocketHandler}
-import org.springframework.context.annotation.{Profile, Bean}
-import org.springframework.messaging.simp.stomp.{StompProtocolHandler, StompBrokerRelayMessageHandler}
+import org.springframework.messaging.simp.handler.{SimpleBrokerMessageHandler, AnnotationMethodMessageHandler}
+import org.springframework.web.socket.{CloseStatus, WebSocketSession}
+import org.springframework.context.annotation.Bean
+import org.springframework.messaging.simp.stomp.StompProtocolHandler
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping
 import java.util.Collections
 import java.util
@@ -16,8 +16,8 @@ import org.springframework.web.socket.server.support.WebSocketHttpRequestHandler
 import org.springframework.messaging.handler.annotation.support.SessionIdMehtodArgumentResolver
 import org.springframework.messaging.handler.MessagingWebSocketHandler
 import org.eigengo.sogx.RecogSessionId
-import org.springframework.scheduling.TaskScheduler
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
+import org.springframework.scheduling.TaskScheduler
 
 /**
  * Contains the components that make up the web application. We require that it is mixed in with the
@@ -63,7 +63,18 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 trait WebConfig {
   // require instances to be mixed in with CoreConfig
   this: CoreConfig =>
-  val userQueueSuffixResolver = new SimpleUserQueueSuffixResolver()
+
+  // Channel for sending STOMP messages to connected WebSocket sessions (mostly for internal use)
+  @Bean def webSocketHandlerChannel(): SubscribableChannel = new ExecutorSubscribableChannel(asyncExecutor())
+
+  @Bean def taskScheduler(): TaskScheduler = {
+    val taskScheduler = new ThreadPoolTaskScheduler()
+    taskScheduler.setThreadNamePrefix("SockJS-")
+    taskScheduler.setPoolSize(4)
+    taskScheduler.afterPropertiesSet()
+
+    taskScheduler
+  }
 
   // MessageHandler that acts as a "simple" message broker
   // See DispatcherServletInitializer for enabling/disabling the "simple-broker" profile
@@ -74,23 +85,16 @@ trait WebConfig {
     handler
   }
 
-  // Channel for sending STOMP messages to connected WebSocket sessions (mostly for internal use)
-  @Bean def webSocketHandlerChannel(): SubscribableChannel = new ExecutorSubscribableChannel(asyncExecutor())
-
-  // Task executor for use in SockJS (heartbeat frames, correlationId timeouts)
-  @Bean def taskScheduler(): TaskScheduler = {
-    val taskScheduler = new ThreadPoolTaskScheduler()
-    taskScheduler.setThreadNamePrefix("SockJS-")
-    taskScheduler.setPoolSize(4)
-    taskScheduler
-  }
-
   // WS -[SockJS]-> /sockjs/** ~> sockJsSocketHandler
 
   // SockJS WS handler mapping
   @Bean def sockJsHandlerMapping(): SimpleUrlHandlerMapping = {
+    val handler = new SubProtocolWebSocketHandler(dispatchChannel())
+    handler.setDefaultProtocolHandler(new StompProtocolHandler())
+    webSocketHandlerChannel().subscribe(handler)
+
     val sockJsService = new DefaultSockJsService(taskScheduler())
-    val requestHandler = new SockJsHttpRequestHandler(sockJsService, sockJsSocketHandler())
+    val requestHandler = new SockJsHttpRequestHandler(sockJsService, handler)
 
     val hm = new SimpleUrlHandlerMapping()
     hm.setOrder(-2)
@@ -99,22 +103,18 @@ trait WebConfig {
     hm
   }
 
-  // WebSocketHandler supporting STOMP messages
-  @Bean def sockJsSocketHandler(): WebSocketHandler = {
-    val stompHandler = new StompProtocolHandler()
-
-    val webSocketHandler = new SubProtocolWebSocketHandler(dispatchChannel())
-    webSocketHandler.setDefaultProtocolHandler(stompHandler)
-    webSocketHandlerChannel().subscribe(webSocketHandler)
-
-    webSocketHandler
-  }
-
   // WS -[Raw]-> /websocket/** ~> websocketSocketHandler
 
   // Raw WS handler mapping
   @Bean def webSocketHandlerMapping(): SimpleUrlHandlerMapping = {
-    val requestHandler = new WebSocketHttpRequestHandler(websocketSocketHandler())
+    val handler = new MessagingWebSocketHandler(dispatchChannel()) {
+      override def afterConnectionClosed(session: WebSocketSession, closeStatus: CloseStatus) {
+        recogSessions().sessionEnded(RecogSessionId(session.getId))
+      }
+    }
+    handler.setUriPrefix("/websocket/")
+
+    val requestHandler = new WebSocketHttpRequestHandler(handler)
 
     val hm = new SimpleUrlHandlerMapping()
     hm.setOrder(-1)
@@ -123,18 +123,8 @@ trait WebConfig {
     hm
   }
 
-  @Bean def websocketSocketHandler(): WebSocketHandler = {
-    val handler = new MessagingWebSocketHandler(dispatchChannel()) {
-      override def afterConnectionClosed(session: WebSocketSession, closeStatus: CloseStatus) {
-        recogSessions().sessionEnded(RecogSessionId(session.getId))
-      }
-    }
-    handler.setUriPrefix("/websocket/")
-    handler
-  }
-
   // MessageHandler for processing messages by delegating to @Controller annotated methods
-  @Bean def messageAnnotationMessageHandler(): AnnotationMethodMessageHandler = {
+  @Bean def annotationMethodMessageHandler(): AnnotationMethodMessageHandler = {
     val handler = new AnnotationMethodMessageHandler(dispatchMessagingTemplate(), webSocketHandlerChannel())
 
     handler.setCustomArgumentResolvers(util.Arrays.asList(new SessionIdMehtodArgumentResolver))
