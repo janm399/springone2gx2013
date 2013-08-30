@@ -21,8 +21,7 @@ import org.springframework.integration.channel.DirectChannel
  */
 trait CoreConfig {
   // the message converter for the payloads
-  // val messageConverter = new MappingJackson2MessageConverter()
-  val messageConverter = new RawJsonMessageConverter()
+  @Bean def messageConverter() = new DelegatingJsonMessageConverter(new MappingJackson2MessageConverter())
 
   // -- The boring components
 
@@ -59,7 +58,7 @@ trait CoreConfig {
   // All MessageHandler beans above subscribe to this channel
   @Bean def dispatchMessagingTemplate(): SimpMessageSendingOperations = {
     val template = new SimpMessagingTemplate(dispatchChannel())
-    template.setMessageConverter(messageConverter)
+    template.setMessageConverter(messageConverter())
     template
   }
 

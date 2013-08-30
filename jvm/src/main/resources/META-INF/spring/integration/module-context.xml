@@ -22,13 +22,12 @@
                                    mapped-reply-headers="*" mapped-request-headers="*"
                                    amqp-template="amqpTemplate"/>
         <!-- take the payload and turn it to a String -->
-        <int:transformer expression="new String(payload)"/>
+        <int:object-to-string-transformer/>
         <!--
-        Take the received response and turn it into an instance of our ObjCoinResponse. See the CoinResponse type: if it
+        Take the received response and turn it into an instance of our CoinResponseModel. See the CoinResponse type: if it
         is ``String``, you don't need this; if it is your own type, you may want to enable the
         ``json-to-object-transformer`` to do the JSON dance.
-
-        <int:json-to-object-transformer type="org.eigengo.sogx.CoinResponse" />
+        <int:json-to-object-transformer type="org.eigengo.sogx." />
         -->
         <int:service-activator ref="recogServiceActivator" method="onCoinResponse"/>
     </int:chain>

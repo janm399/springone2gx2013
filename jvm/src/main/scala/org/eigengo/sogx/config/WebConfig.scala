@@ -107,7 +107,7 @@ trait WebConfig {
 
     handler.setCustomArgumentResolvers(util.Arrays.asList(new SessionIdMehtodArgumentResolver))
     handler.setDestinationPrefixes(util.Arrays.asList("/app/"))
-    handler.setMessageConverter(messageConverter)
+    handler.setMessageConverter(messageConverter())
     dispatchChannel().subscribe(handler)
     handler
   }
