@@ -10,6 +10,10 @@ RabbitRpcServer::RabbitRpcServer(const std::string _queue, const std::string _ex
 
 }
 
+RabbitRpcServer::~RabbitRpcServer() {
+	// do nothing
+}
+
 void RabbitRpcServer::handleEnvelope(const AmqpClient::Envelope::ptr_t envelope, const AmqpClient::Channel::ptr_t channel) {
 	BasicMessage::ptr_t request = envelope->Message();
 	std::string replyTo = request->ReplyTo();
