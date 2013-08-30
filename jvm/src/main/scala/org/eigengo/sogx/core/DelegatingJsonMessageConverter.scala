@@ -8,7 +8,6 @@ import java.lang.reflect.Type
 class DelegatingJsonMessageConverter(otherConverter: MessageConverter[Object]) extends MessageConverter[Object] {
 
   private def toMessage0(payload: Object): Message[_] = payload match {
-    case b: Array[Byte]             => MessageBuilder.withPayload(b).build()
     case s: String                  => MessageBuilder.withPayload(s.getBytes).build()
     case x                          => otherConverter.toMessage(x)
   }

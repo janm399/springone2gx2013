@@ -17,6 +17,6 @@ class RecogSessions(messageSender: SimpMessageSendingOperations) {
     sendSessions()
   }
 
-  private def sendSessions(): Unit = messageSender.convertAndSend(s"/topic/recog/sessions", sessions.values().toString)
+  private def sendSessions(): Unit = messageSender.convertAndSend(s"/topic/recog/sessions", sessions.values())
 
 }
