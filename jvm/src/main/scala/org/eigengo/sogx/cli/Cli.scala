@@ -46,8 +46,8 @@ object Cli extends App {
     Console.readLine() match {
       case QuitCommand                 => return
 
-      case ImageCommand(fileName)      => readAll(fileName)(recogService.imageChunk(UUID.randomUUID().toString, _))
-      case MJPEGCommand(fileName, fps) => readChunks(fileName, fps)(recogService.mjpegChunk(UUID.randomUUID().toString, _))
+      case ImageCommand(fileName)      => readAll(fileName)(recogService.imageChunk(UUID.randomUUID().toString))
+      case MJPEGCommand(fileName, fps) => readChunks(fileName, fps)(recogService.mjpegChunk(UUID.randomUUID().toString))
 
       case null                        => // do nothing
       case _                           => println("wtf??")
@@ -73,7 +73,13 @@ object Cli extends App {
 }
 
 /**
- * Contains command regexes
+ * Contains command matchers:
+ *
+ * * ``QuitCommand``  is just a string that matches the string... erm, ``"quit"``
+ * * ``ImageCommand`` is a regex matcher that matches inputs ``image:`` followed by any other characters,
+ *                    which are extracted
+ * * ``MJPEGCommand`` is an object with a custom unapply method that matches ``mjpeg:<name>[?<fps>]``,
+ *                    where <name> is the file name and optional <fps> is the frames per second parameter (default 10)
  */
 private[cli] object Commands {
   // this is a simple string
@@ -94,10 +100,3 @@ private[cli] object Commands {
     }
   }
 }
-
-
-/*
-
-C521DAB7-391F-4AE1-86D7-878EBD6322E3/mjpeg:/coins1.mjpeg
-
-*/

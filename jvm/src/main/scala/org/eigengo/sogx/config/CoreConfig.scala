@@ -18,6 +18,11 @@ import org.springframework.integration.channel.DirectChannel
  * ``asyncExecutor`` and ``recogServiceActivator``. The ``asyncExecutor`` defines the way in which the ``dispatchChannel``
  * is going to route the messages around. The more interesting component is ``recogServiceActivator``, which defines
  * what happens to the recog messages when they arrive from the nether world of the native code.
+ *
+ * Finally, we have a little bit of Spring Integration, defining the ``recogChannel`` (which is used
+ * in the Spring Integration configuration that's hiding in ``/META-INF/spring/integration/module-context.xml``),
+ * and the ``dispatchChannel`` that is ultimately used by the Spring Messaging code to deliver the messages that arrive
+ * on it over the web sockets.
  */
 trait CoreConfig {
   // the message converter for the payloads
@@ -32,7 +37,7 @@ trait CoreConfig {
   @Bean def chunkDecoder() = new ChunkDecoder(mjpegDecoder())
 
   // Recog service is a gateway to the recognition flow
-  @Bean def recogService(): RecogService = new RecogService(recogRequest(), dispatchMessagingTemplate())
+  @Bean def recogService(): RecogService = new RecogService(recogRequest())
 
   // maintains the recognition sessions
   @Bean def recogSessions() = new RecogSessions(dispatchMessagingTemplate())

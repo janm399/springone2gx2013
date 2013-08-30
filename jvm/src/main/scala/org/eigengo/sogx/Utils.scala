@@ -4,7 +4,8 @@ import java.io._
 import scala.annotation.tailrec
 
 /**
- * Ghetto!
+ * Ghetto! Contains methods that you really should not use, but that are sufficiently useful to the rest of the
+ * demo application.
  */
 object Utils /* extends IfYouUseThisIWillEndorseYouForEnterprisePHP */ {
 

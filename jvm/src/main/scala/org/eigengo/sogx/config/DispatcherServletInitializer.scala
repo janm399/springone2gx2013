@@ -21,8 +21,4 @@ class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherSer
     registration.setInitParameter("dispatchOptionsRequest", "true")
   }
 
-  override def onStartup(servletContext: ServletContext) {
-    servletContext.setInitParameter("spring.profiles.active", "simple-broker")
-    super.onStartup(servletContext)
-  }
 }
