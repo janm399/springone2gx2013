@@ -1,6 +1,7 @@
 #Building
 To build the application you will need the following "standard" components, that can be installed automatically on most systems. Tested with [Homebrew](http://brew.sh/) on OS X; I assume that package managers on assorted Linuxen (thanks to [Verity Stob](http://www.theregister.co.uk/software/stob/) for the name!) will work in a very similar fashion. (Sorry, Windows!)
 
+* sbt-extras
 * cmake
 * Boost
 * RabbitMQ
