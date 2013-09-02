@@ -46,9 +46,11 @@ class RecogService(recogChannel: MessageChannel) {
     recogChannel.send(message)
   }
 
-  def imageChunk(correlationId: CorrelationId)(chunk: ChunkData) = sendWithContentType(ContentTypes.`image/*`, correlationId, chunk)
+  def imageChunk(correlationId: CorrelationId)(chunk: ChunkData) = 
+  	sendWithContentType(ContentTypes.`image/*`, correlationId, chunk)
 
-  def mjpegChunk(correlationId: CorrelationId)(chunk: ChunkData) = sendWithContentType(ContentTypes.`video/mjpeg`, correlationId, chunk)
+  def mjpegChunk(correlationId: CorrelationId)(chunk: ChunkData) = 
+  	sendWithContentType(ContentTypes.`video/mjpeg`, correlationId, chunk)
 
 }
 ```
@@ -75,9 +77,11 @@ class ChunkDecoder(mjpegDecoder: MJPEGDecoder) {
     case `image/*`     => decodeSingleImage(correlationId, chunk)
   }
 
-  private def decodeSingleImage(correlationId: CorrelationId, chunk: ChunkData): util.Collection[ImageData] = Collections.singletonList(chunk)
+  private def decodeSingleImage(correlationId: CorrelationId, chunk: ChunkData): util.Collection[ImageData] = 
+  	Collections.singletonList(chunk)
 
-  private def decodeMJPEGFrames(correlationId: CorrelationId, chunk: ChunkData): util.Collection[ImageData] = mjpegDecoder.decodeFrames(correlationId, chunk)
+  private def decodeMJPEGFrames(correlationId: CorrelationId, chunk: ChunkData): util.Collection[ImageData] = 
+  	mjpegDecoder.decodeFrames(correlationId, chunk)
 
 
 }
