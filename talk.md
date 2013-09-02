@@ -107,6 +107,9 @@ Next up, we have the integration chain. The gold piece is the AMQP bit.
     <int:object-to-string-transformer/>
     <int:service-activator ref="recogServiceActivator" method="onCoinResponse"/>
 </int:chain>
+
+<rabbit:connection-factory id="connectionFactory" host="localhost" channel-cache-size="10" />
+<rabbit:template id="amqpTemplate" connection-factory="connectionFactory" />
 ```
 
 > XML I
