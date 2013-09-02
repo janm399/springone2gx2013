@@ -10,6 +10,8 @@ namespace eigengo { namespace sogx {
 	struct Point {
 		int x;
 		int y;
+		
+		bool operator==(const Point &rhs) const;
 	};
 
 	struct Coin {
@@ -17,12 +19,19 @@ namespace eigengo { namespace sogx {
 		int radius;
 	};
 	
+	struct CoinResult {
+		std::vector<Coin> coins;
+#ifdef WITH_RINGS
+		bool hasRing;
+#endif
+	};
+	
 	class CoinCounter {
 	private:
-		std::vector<Coin> countGpu(const cv::Mat &image);
-		std::vector<Coin> countCpu(const cv::Mat &image);
+		CoinResult countGpu(const cv::Mat &image);
+		CoinResult countCpu(const cv::Mat &image);
 	public:
-		std::vector<Coin> count(const cv::Mat &image);
+		CoinResult count(const cv::Mat &image);
 	};
 			
 }

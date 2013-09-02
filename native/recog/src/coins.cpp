@@ -1,11 +1,16 @@
 #include "coins.h"
+#include <opencv2/ocl.hpp>
 
 using namespace eigengo::sogx;
 
-std::vector<Coin> CoinCounter::countCpu(const cv::Mat &image) {
+bool Point::operator==(const Point& that) const {
+	return x == that.x && y == that.y;
+}
+
+CoinResult CoinCounter::countCpu(const cv::Mat &image) {
 	using namespace cv;
 	
-	std::vector<Coin> coins;
+	CoinResult result;
 	
 	Mat dst;
 	std::vector<Vec3f> circles;
@@ -28,72 +33,77 @@ std::vector<Coin> CoinCounter::countCpu(const cv::Mat &image) {
 		coin.center.x = (int)circles[i][0];
 		coin.center.y = (int)circles[i][1];
 		coin.radius = (int)circles[i][2];
-		coins.push_back(coin);
+		result.coins.push_back(coin);
 	}
-
-#ifdef TEST
-	Mat x(image);
+	
+#ifdef WITH_RINGS
+	int ringCount = 0;
 	for (size_t i = 0; i < circles.size(); i++ ) {
-		Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
-		int radius = cvRound(circles[i][2]);
-		// draw the circle center
-		circle(x, center, 3, Scalar(0,255,0), -1, 8, 0 );
-		// draw the circle outline
-		circle(x, center, radius, Scalar(0,0,255), 3, 8, 0 );
+		cv::Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
+		if (dst.at<uchar>(center) > 0) ringCount++;
 	}
-	cv::imshow("", dst);
-	cv::waitKey();
+	result.hasRing = ringCount > 0;
 #endif
-	return coins;
+	
+	return result;
 }
 
-#ifdef GPU
-std::vector<Coin> CoinCounter::countGpu(const cv::Mat &cpuImage) {
-	std::vector<Coin> coins;
+// #define WITH_OPENCL
+
+#ifdef WITH_OPENCL
+CoinResult CoinCounter::countGpu(const cv::Mat &cpuImage) {
+	using namespace cv;
+
+	CoinResult result;
 	
-	cv::gpu::GpuMat image(cpuImage);
-	cv::gpu::GpuMat dst;
-	cv::gpu::GpuMat circlesMat;
-	
-	cv::gpu::cvtColor(image, dst, CV_BGR2GRAY);
-	cv::gpu::GaussianBlur(dst, dst, cv::Size(3, 3), 2, 2);
-	cv::gpu::Canny(dst, dst, 1000, 1700, 5);
-	cv::gpu::GaussianBlur(dst, dst, cv::Size(9, 9), 3, 3);
-	cv::gpu::HoughCircles(dst, circlesMat, CV_HOUGH_GRADIENT,
+	ocl::oclMat image(cpuImage);
+	ocl::oclMat dst;
+	ocl::oclMat circlesMat;
+		
+	ocl::cvtColor(image, dst, COLOR_RGB2GRAY);
+	ocl::GaussianBlur(dst, dst, Size(9, 9), 3, 3);
+	ocl::threshold(dst, dst, 150, 255, THRESH_BINARY);
+	ocl::GaussianBlur(dst, dst, Size(3, 3), 3, 3);
+	ocl::HoughCircles(dst, circlesMat, HOUGH_GRADIENT,
 				 1,    // dp
-				 40,   // min dist
-				 100,  // canny1
-				 105,  // canny2
-				 10,   // min radius
-				 200   // max radius
+				 60,   // min dist
+				 200,  // canny1
+				 19,   // canny2
+				 30,   // min radius
+				 100   // max radius
 				 );
 	
-	std::vector<cv::Vec3f> circles;
-	cv::gpu::HoughCirclesDownload(circlesMat, circles);
+	// TODO: Temporary code until OpenCV implements HoughCirclesDownload
+	//ocl::HoughCirclesDownload(circlesMat, circles);
+	Mat circles;
+	if (!circlesMat.empty()) circlesMat.download(circles);
 	
-	for (size_t i = 0; i < circles.size(); i++) {
+	for (size_t i = 0; i < circles.cols; i++) {
 		Coin coin;
-		coin.center = circles[i][0];
-		coin.radius = circles[i][1];
+		coin.center.x = circles.at<float>(0, i * 3 + 0);
+		coin.center.y = circles.at<float>(0, i * 3 + 1);
+		coin.radius   = circles.at<float>(0, i * 3 + 2);
 		
 		bool dup = false;
-		for (size_t j = 0; j < coins.size(); j++) {
-			if (coins.at(j).center == coin.center ||
-				coins.at(j).radius == coin.radius) {
+		for (size_t j = 0; j < result.coins.size(); j++) {
+			if (result.coins.at(j).center == coin.center ||
+				result.coins.at(j).radius == coin.radius) {
 				dup = true;
 				break;
 			}
 		}
-		if (!dup) coins.push_back(coin);
+		if (!dup) result.coins.push_back(coin);
 	}
-	
-	return coins;
+		
+	return result;
 }
 #endif
 
-std::vector<Coin> CoinCounter::count(const cv::Mat &image) {
-#ifdef GPU
-	if (cv::gpu::getCudaEnabledDeviceCount() > 0) return countGpu(image);
+CoinResult CoinCounter::count(const cv::Mat &image) {
+#ifdef WITH_OPENCL
+	std::vector<cv::ocl::Info> oclInfo;
+	cv::ocl::getDevice(oclInfo);
+	return countGpu(image);
 #endif
 	return countCpu(image);
 }

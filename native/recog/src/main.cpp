@@ -19,8 +19,8 @@ std::string Main::handleMessage(const AmqpClient::BasicMessage::ptr_t message, c
 
 		// ponies & unicorns
 		Jzon::Array coinsJson;
-		auto coins = coinCounter.count(imageMat);
-		for (auto i = coins.begin(); i != coins.end(); ++i) {
+		auto result = coinCounter.count(imageMat);
+		for (auto i = result.coins.begin(); i != result.coins.end(); ++i) {
 			Jzon::Object coinJson;
 			Jzon::Object centerJson;
 			centerJson.Add("x", i->center.x);
@@ -30,7 +30,7 @@ std::string Main::handleMessage(const AmqpClient::BasicMessage::ptr_t message, c
 			coinsJson.Add(coinJson);
 		}
 #ifdef WITH_RINGS
-		responseJson.Add("hasRing", ringDetector.detect(imageMat));
+		responseJson.Add("hasRing", result.hasRing);
 #endif		
 		responseJson.Add("coins", coinsJson);
 		responseJson.Add("succeeded", true);
